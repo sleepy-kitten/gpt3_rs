@@ -33,9 +33,20 @@ impl Client {
     pub fn request_client(&self) -> &reqwest::Client {
         &self.reqwest_client
     }
-    crate fn init_request_data(&self, url: &str) -> RequestBuilder {
-        self.reqwest_client
-            .post(url)
+    crate fn init_post(&self, url: &str) -> RequestBuilder {
+        let builder = self.reqwest_client.post(url);
+        self.init_request(builder)
+    }
+    crate fn init_delete(&self, url: &str) -> RequestBuilder {
+        let builder = self.reqwest_client.delete(url);
+        self.init_request(builder)
+    }
+    crate fn init_get(&self, url: &str) -> RequestBuilder {
+        let builder = self.reqwest_client.get(url);
+        self.init_request(builder)
+    }
+    crate fn init_request(&self, builder: RequestBuilder) -> RequestBuilder {
+        builder
             .header("Content-Type", "application/json")
             .bearer_auth(self.gpt_token())
     }

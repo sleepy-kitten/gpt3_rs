@@ -5,7 +5,6 @@ use crate::client::Client;
 
 pub mod api;
 pub mod client;
-mod const_str;
 mod model;
 
 const OPENAI_URL: &str = "https://api.openai.com/v1";

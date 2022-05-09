@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{const_str::ConstStr, OPENAI_URL};
+use crate::OPENAI_URL;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]

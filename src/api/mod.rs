@@ -12,16 +12,16 @@ mod searches;
 pub trait Action {
     fn build_request(&self, client: &Client) -> RequestBuilder;
 }
-pub trait Url {
+trait Url {
     fn url(&self) -> String;
 }
 impl<T> Action for T
 where
-    T: Url + ?Sized + Serialize,
+    T: Url + Serialize,
 {
     fn build_request(&self, client: &Client) -> reqwest::RequestBuilder {
         client
-            .init_request_data(&self.url())
+            .init_post(&self.url())
             .body(serde_json::to_string(self).unwrap())
     }
 }

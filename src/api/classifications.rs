@@ -65,18 +65,27 @@ pub struct Request {
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Response {
+    /// ?
     pub completion: String,
+    /// The chosen label for the query
     pub label: String,
+    /// The model used for the completion of the request
     pub model: String,
+    /// The requested action
     pub object: String,
+    /// The model used for the search
     pub search_model: String,
+    /// The examples used to judge the query
     pub selected_examples: Vec<SelectedExample>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct SelectedExample {
-    pub document: i64,
+    /// The document the example is in
+    pub document: usize,
+    /// The label of the example
     pub label: String,
+    /// The text of the example
     pub text: String,
 }
 

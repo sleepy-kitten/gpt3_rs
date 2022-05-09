@@ -5,7 +5,7 @@ use crate::OPENAI_URL;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
-use super::{Url};
+use super::Url;
 
 /// Answers the specified question using the provided documents and examples.
 /// The endpoint first searches over provided documents or files to find relevant context.
