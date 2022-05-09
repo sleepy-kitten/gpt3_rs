@@ -7,13 +7,13 @@ use crate::model::Model;
 
 use super::RequestInfo;
 /// Given a prompt, the model will return one or more predicted completions, and can also return the probabilities of alternative tokens at each position.
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, Builder)]
+#[derive( Debug, Clone, PartialEq, Serialize, Builder)]
 #[builder_struct_attr(doc = "# Required")]
 #[builder_struct_attr(doc = "[`model`][RequestBuilder::model]")]
 #[builder_struct_attr(doc = "")]
 #[builder(name = "Builder")]
 pub struct Request {
-    #[serde(skip)]
+    #[serde(skip_serializing)]
     pub model: Model,
     /// The prompt(s) to generate completions for, encoded as a string, array of strings, array of tokens, or array of token arrays.
     /// Note that <|endoftext|> is the document separator that the model sees during training,

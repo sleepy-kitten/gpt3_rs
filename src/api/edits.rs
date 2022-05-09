@@ -5,14 +5,14 @@ use crate::model::Model;
 
 use super::RequestInfo;
 /// Given a prompt and an instruction, the model will return an edited version of the prompt.
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, Builder)]
+#[derive( Debug, Clone, PartialEq, Serialize, Builder)]
 #[builder_struct_attr(doc = "# Required")]
 #[builder_struct_attr(doc = "[`model`][RequestBuilder::model]")]
 #[builder_struct_attr(doc = "[`instruction`][RequestBuilder::instruction]")]
 #[builder_struct_attr(doc = "")]
 #[builder(name = "Builder")]
 pub struct Request {
-    #[serde(skip)]
+    #[serde(skip_serializing)]
     pub model: Model,
     /// The input text to use as a starting point for the edit.
     #[builder(default, setter(strip_option))]

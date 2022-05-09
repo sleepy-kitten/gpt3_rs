@@ -2,12 +2,11 @@ use serde::{Deserialize, Serialize};
 
 use crate::OPENAI_URL;
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Model {
     Ada,
     Babbage,
-    #[default]
     Curie,
     Davinci,
 }

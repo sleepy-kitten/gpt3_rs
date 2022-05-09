@@ -12,7 +12,7 @@ use super::RequestInfo;
 /// The endpoint first searches over the labeled examples to select the ones most relevant for the particular query.
 /// Then, the relevant examples are combined with the query to construct a prompt to produce the final label via the completions endpoint.
 /// Labeled examples can be provided via an uploaded file, or explicitly listed in the request using the examples parameter for quick tests and small scale use cases.
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, Builder)]
+#[derive(Debug, Clone, PartialEq, Serialize, Builder)]
 #[builder_struct_attr(doc = "# Required")]
 #[builder_struct_attr(doc = "[`model`][RequestBuilder::model]")]
 #[builder_struct_attr(doc = "[`query`][RequestBuilder::query]")]
