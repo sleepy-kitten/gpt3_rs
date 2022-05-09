@@ -215,7 +215,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "gpt3-api"
+name = "gpt3_rs"
 version = "0.1.0"
 dependencies = [
  "derive_builder",
