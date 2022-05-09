@@ -1,6 +1,5 @@
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
-use typed_builder::TypedBuilder;
 
 use crate::model::Model;
 
@@ -23,21 +22,26 @@ pub struct Request {
     ///The maximum document length (in tokens) is 2034 minus the number of tokens in the query.
     ///You should specify either documents or a file, but not both.
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub documents: Option<Vec<String>>,
     /// The ID of an uploaded file that contains documents to search over.
     /// You should specify either documents or a file, but not both.
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub file: Option<String>,
     /// The maximum number of documents to be re-ranked and returned by search.
     /// This flag only takes effect when file is set.
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub max_rerank: Option<u64>,
     /// A special boolean flag for showing metadata. If set to true, each document entry in the returned JSON will contain a "metadata" field.
     /// This flag only takes effect when file is set.
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub return_metadata: Option<bool>,
     /// A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub user: Option<String>,
 }
 
@@ -62,6 +66,6 @@ pub struct Data {
 impl RequestInfo for Request {
     type Response = Response;
     fn url(&self) -> String {
-        self.model.url("search")
+        self.model.url("/search")
     }
 }

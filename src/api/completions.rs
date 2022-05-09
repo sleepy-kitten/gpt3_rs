@@ -2,7 +2,6 @@ use std::collections::HashMap;
 
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
-use typed_builder::TypedBuilder;
 
 use crate::model::Model;
 
@@ -20,9 +19,11 @@ pub struct Request {
     /// Note that <|endoftext|> is the document separator that the model sees during training,
     /// so if a prompt is not specified the model will generate as if from the beginning of a new document.
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub prompt: Option<String>,
     /// The suffix that comes after a completion of inserted text.
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub suffix: Option<String>,
     /// The maximum number of tokens to generate in the completion.
     /// The token count of your prompt plus max_tokens cannot exceed the model's context length.
@@ -30,6 +31,7 @@ pub struct Request {
     /// # Default
     /// Defaults to 16
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub max_tokens: Option<u64>,
     /// What sampling temperature to use. Higher values means the model will take more risks.
     /// Try 0.9 for more creative applications, and 0 (argmax sampling) for ones with a well-defined answer.
@@ -37,6 +39,7 @@ pub struct Request {
     /// # Default
     /// Defaults to 1.0
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub temperature: Option<f64>,
     /// An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
     /// So 0.1 means only the tokens comprising the top 10% probability mass are considered.
@@ -44,6 +47,7 @@ pub struct Request {
     /// # Default
     /// Defaults to 1.0
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub top_p: Option<f64>,
     /// How many completions to generate for each prompt.
     /// Note: Because this parameter generates many completions, it can quickly consume your token quota.
@@ -51,12 +55,14 @@ pub struct Request {
     /// # Default
     /// Defaults to 1
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub n: Option<i64>,
     /// Whether to stream back partial progress.
     /// If set, tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
     /// # Default
     /// Defaults to false
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub stream: Option<bool>,
     /// Include the log probabilities on the logprobs most likely tokens, as well the chosen tokens.
     /// For example, if logprobs is 5, the API will return a list of the 5 most likely tokens.
@@ -65,24 +71,29 @@ pub struct Request {
     /// # Default
     /// Defaults to none
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub logprobs: Option<u8>,
     /// Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub stop: Option<Vec<String>>,
     /// Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
     ///
     /// [See more information about frequency and presence penalties](https://beta.openai.com/docs/api-reference/parameter-details)
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub presence_penalty: Option<f64>,
     /// Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
     ///
     /// [See more information about frequency and presence penalties](https://beta.openai.com/docs/api-reference/parameter-details)
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub frequency_penalty: Option<f64>,
     /// Generates best_of completions server-side and returns the "best" (the one with the lowest log probability per token). Results cannot be streamed.
     /// When used with n, best_of controls the number of candidate completions and n specifies how many to return – best_of must be greater than n.
     /// Note: Because this parameter generates many completions, it can quickly consume your token quota. Use carefully and ensure that you have reasonable settings for max_tokens and stop.
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub best_of: Option<u8>,
     /// Modify the likelihood of specified tokens appearing in the completion.
     /// Accepts a json object that maps tokens (specified by their token ID in the GPT tokenizer) to an associated bias value from -100 to 100.
@@ -92,9 +103,11 @@ pub struct Request {
     /// values like -100 or 100 should result in a ban or exclusive selection of the relevant token.
     /// As an example, you can pass {"50256": -100} to prevent the <|endoftext|> token from being generated.
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub logit_bias: Option<HashMap<String, i8>>,
     /// A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
     #[builder(default, setter(strip_option))]
+    #[serde(skip_serializing_if = "Option::is_none")] 
     pub user: Option<String>,
 }
 
@@ -126,6 +139,6 @@ pub struct Choice {
 impl RequestInfo for Request {
     type Response = Response;
     fn url(&self) -> String {
-        self.model.url("completions")
+        self.model.url("/completions")
     }
 }
