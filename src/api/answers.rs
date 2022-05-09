@@ -1,12 +1,11 @@
 use std::collections::HashMap;
 
-use crate::client::Client;
 use crate::model::Model;
 use crate::OPENAI_URL;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
-use super::Action;
+use super::{Url};
 
 /// Answers the specified question using the provided documents and examples.
 /// The endpoint first searches over provided documents or files to find relevant context.
@@ -91,15 +90,8 @@ pub struct SelectedDocument {
     pub text: String,
 }
 
-impl Request {
+impl Url for Request {
     fn url(&self) -> String {
         format!("{OPENAI_URL}/answers")
-    }
-}
-impl Action for Request {
-    fn build_request(&self, client: &Client) -> reqwest::RequestBuilder {
-        client
-            .init_request_data(&self.url())
-            .body(serde_json::to_string(self).unwrap())
     }
 }

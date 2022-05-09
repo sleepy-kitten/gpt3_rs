@@ -3,7 +3,7 @@
 
 use crate::client::Client;
 
-pub mod action;
+pub mod api;
 pub mod client;
 mod const_str;
 mod model;

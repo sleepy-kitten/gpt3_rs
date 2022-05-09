@@ -3,11 +3,10 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
-use crate::client::Client;
 use crate::model::Model;
 use crate::OPENAI_URL;
 
-use super::Action;
+use super::Url;
 
 /// Classifies the specified query using provided examples.
 /// The endpoint first searches over the labeled examples to select the ones most relevant for the particular query.
@@ -81,15 +80,8 @@ pub struct SelectedExample {
     pub text: String,
 }
 
-impl Request {
+impl Url for Request {
     fn url(&self) -> String {
         format!("{OPENAI_URL}/classifications")
-    }
-}
-impl Action for Request {
-    fn build_request(&self, client: &Client) -> reqwest::RequestBuilder {
-        client
-            .init_request_data(&self.url())
-            .body(serde_json::to_string(self).unwrap())
     }
 }

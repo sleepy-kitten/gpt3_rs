@@ -1,6 +1,6 @@
 use reqwest::RequestBuilder;
 
-use crate::{action::Action, model::Model};
+use crate::{api::Action, model::Model};
 
 pub struct Client {
     reqwest_client: reqwest::Client,

@@ -3,10 +3,9 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
-use crate::client::Client;
 use crate::model::Model;
 
-use super::Action;
+use super::{Url};
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, TypedBuilder)]
 pub struct Request {
@@ -96,15 +95,9 @@ pub struct Choice {
     pub logprobs: Option<u8>,
     pub finish_reason: String,
 }
-impl Request {
+impl Url for Request {
     fn url(&self) -> String {
         self.model.url("completions")
     }
 }
-impl Action for Request {
-    fn build_request(&self, client: &Client) -> reqwest::RequestBuilder {
-        client
-            .init_request_data(&self.url())
-            .body(serde_json::to_string(self).unwrap())
-    }
-}
+
