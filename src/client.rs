@@ -1,12 +1,20 @@
 use reqwest::RequestBuilder;
 
-use crate::action::Action;
+use crate::{action::Action, model::Model};
 
 pub struct Client {
-    request_client: reqwest::Client,
+    reqwest_client: reqwest::Client,
     gpt_token: String,
+    default_model: Model,
 }
 impl Client {
+    pub fn new(token: String) -> Self {
+        Client {
+            reqwest_client: reqwest::Client::new(),
+            gpt_token: token,
+            default_model: Model::Curie,
+        }
+    }
     pub async fn request<T>(&self, action: T) -> reqwest::Result<reqwest::Response>
     where
         T: Action,
@@ -23,10 +31,11 @@ impl Client {
     /// Get a reference to the client's request client.
     #[must_use]
     pub fn request_client(&self) -> &reqwest::Client {
-        &self.request_client
+        &self.reqwest_client
     }
-    pub fn add_request_data(&self, request_builder: RequestBuilder) -> RequestBuilder {
-        request_builder
+    crate fn init_request_data(&self, url: &str) -> RequestBuilder {
+        self.reqwest_client
+            .post(url)
             .header("Content-Type", "application/json")
             .bearer_auth(self.gpt_token())
     }
