@@ -3,26 +3,26 @@ use typed_builder::TypedBuilder;
 
 use crate::model::Model;
 
-use super::Url;
+use super::RequestInfo;
 /// Given a prompt and an instruction, the model will return an edited version of the prompt.
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, TypedBuilder)]
+#[builder(field_defaults(default, setter(strip_option)))]
 pub struct Request {
     #[serde(skip)]
+    #[builder(!default, setter(!strip_option))]
     pub model: Model,
     /// The input text to use as a starting point for the edit.
-    #[builder(default, setter(strip_option))]
     pub input: Option<String>,
     /// The instruction that tells the model how to edit the prompt.
+    #[builder(!default, setter(!strip_option))]
     pub instruction: String,
     /// What sampling temperature to use. Higher values means the model will take more risks.
     /// Try 0.9 for more creative applications, and 0 (argmax sampling) for ones with a well-defined answer.
     /// We generally recommend altering this or top_p but not both.
-    #[builder(default, setter(strip_option))]
     pub temperature: Option<f64>,
     /// An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
     /// So 0.1 means only the tokens comprising the top 10% probability mass are considered.
     /// We generally recommend altering this or temperature but not both.
-    #[builder(default, setter(strip_option))]
     pub top_p: Option<f64>,
 }
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -41,7 +41,8 @@ pub struct Choice {
     /// The index of this choice
     pub index: usize,
 }
-impl Url for Request {
+impl RequestInfo for Request {
+    type Response = Response;
     fn url(&self) -> String {
         self.model.url("edits")
     }

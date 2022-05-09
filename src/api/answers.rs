@@ -5,21 +5,26 @@ use crate::OPENAI_URL;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
-use super::Url;
+use super::RequestInfo;
 
 /// Answers the specified question using the provided documents and examples.
 /// The endpoint first searches over provided documents or files to find relevant context.
 /// The relevant context is combined with the provided examples and question to create the prompt for completion.
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, TypedBuilder)]
+#[builder(field_defaults(default, setter(strip_option)))]
 pub struct Request {
     /// ID of the engine to use for completion. You can select one of ada, babbage, curie, or davinci.
+    #[builder(!default, setter(!strip_option))]
     pub model: Model,
     /// Question to get answered.
+    #[builder(!default, setter(!strip_option))]
     pub question: String,
     /// List of (question, answer) pairs that will help steer the model towards the tone and answer format you'd like.
     /// We recommend adding 2 to 3 examples.
+    #[builder(!default, setter(!strip_option))]
     pub examples: Vec<Vec<String>>,
     /// A text snippet containing the contextual information used to generate the answers for the examples you provide.
+    #[builder(!default, setter(!strip_option))]
     pub examples_context: String,
     /// List of documents from which the answer for the input question should be derived.
     /// If this is an empty list, the question will be answered based on the question-answer examples.
@@ -90,7 +95,8 @@ pub struct SelectedDocument {
     pub text: String,
 }
 
-impl Url for Request {
+impl RequestInfo for Request {
+    type Response = Response;
     fn url(&self) -> String {
         format!("{OPENAI_URL}/answers")
     }

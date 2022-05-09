@@ -6,17 +6,20 @@ use typed_builder::TypedBuilder;
 use crate::model::Model;
 use crate::OPENAI_URL;
 
-use super::Url;
+use super::RequestInfo;
 
 /// Classifies the specified query using provided examples.
 /// The endpoint first searches over the labeled examples to select the ones most relevant for the particular query.
 /// Then, the relevant examples are combined with the query to construct a prompt to produce the final label via the completions endpoint.
 /// Labeled examples can be provided via an uploaded file, or explicitly listed in the request using the examples parameter for quick tests and small scale use cases.
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, TypedBuilder)]
+#[builder(field_defaults(default, setter(strip_option)))]
 pub struct Request {
     /// ID of the engine to use for completion. You can select one of ada, babbage, curie, or davinci.
+    #[builder(!default, setter(!strip_option))]
     pub model: Model,
     /// Query to be classified.
+    #[builder(!default, setter(!strip_option))]
     pub query: String,
     /// A list of examples with labels, in the following format:
     /// `[["The movie is so interesting.", "Positive"], ["It is quite boring.", "Negative"], ...]`
@@ -89,7 +92,8 @@ pub struct SelectedExample {
     pub text: String,
 }
 
-impl Url for Request {
+impl RequestInfo for Request {
+    type Response = Response;
     fn url(&self) -> String {
         format!("{OPENAI_URL}/classifications")
     }
