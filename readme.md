@@ -56,5 +56,4 @@ async fn main() {
 
     println!("{answer}");
 }
-l
 ```
