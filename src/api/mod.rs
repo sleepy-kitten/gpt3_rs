@@ -50,6 +50,6 @@ where
             .reqwest_client()
             .post(&self.url())
             .auth(client.gpt_token())
-            .body(serde_json::to_string(self).unwrap())
+            .json(self)
     }
 }
