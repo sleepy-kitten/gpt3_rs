@@ -19,12 +19,12 @@ where
 {
     type Response = Response;
 
-    fn build_request(&self, client: &crate::Client) -> reqwest::RequestBuilder {
+    fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {
         client
             .reqwest_client()
             .post(format!("{OPENAI_URL}/files/"))
-            .body(serde_json::to_string(self).expect("serialization failed"))
             .auth(client.gpt_token())
+            .json(self)
     }
 }
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]

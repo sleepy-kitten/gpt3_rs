@@ -45,7 +45,7 @@ where
     T: RequestInfo + Serialize,
 {
     type Response = T::Response;
-    fn build_request(&self, client: &Client) -> reqwest::RequestBuilder {
+    fn build_request(&self, client: &Client) -> crate::RequestBuilder {
         client
             .reqwest_client()
             .post(&self.url())

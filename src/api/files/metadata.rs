@@ -9,7 +9,7 @@ struct Request {
 impl Action for Request {
     type Response = Response;
 
-    fn build_request(&self, client: &crate::Client) -> reqwest::RequestBuilder {
+    fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {
         client
             .reqwest_client()
             .get(format!("{OPENAI_URL}/files/{}", self.file_id))

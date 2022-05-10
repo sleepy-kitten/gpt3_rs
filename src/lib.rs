@@ -25,6 +25,10 @@
 //!     println!("{answer}");
 //! }
 //! ```
+#[cfg(not(feature = "blocking"))]
+pub(crate) type RequestBuilder = reqwest::RequestBuilder;
+#[cfg(feature = "blocking")]
+pub(crate) type RequestBuilder = reqwest::blocking::RequestBuilder;
 
 pub mod api;
 mod client;
