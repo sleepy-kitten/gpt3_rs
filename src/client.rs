@@ -10,10 +10,10 @@ use crate::api::Action;
 /// ```
 /// let client = Client::new(token);
 /// let request = completions::Builder::default()
-/// .model(Model::Babbage)
-/// .prompt("what is 1 + 2?".into())
-/// .build()
-/// .unwrap();
+///     .model(Model::Babbage)
+///     .prompt("what is 1 + 2?".into())
+///     .build()
+///     .unwrap();
 /// 
 /// let response = client.request(request).await.unwrap();
 /// ```
