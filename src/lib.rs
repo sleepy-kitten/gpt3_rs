@@ -26,12 +26,20 @@
 //! }
 //! ```
 
-mod client;
-mod model;
-mod into_vec;
 pub mod api;
+mod client;
 mod error;
+mod into_vec;
+mod model;
 pub use client::Client;
+pub use error::Error;
 pub use model::Model;
+
+pub mod prelude {
+    pub use crate::api::*;
+    pub use crate::client::Client;
+    pub use crate::error::Error;
+    pub use crate::model::Model;
+}
 
 const OPENAI_URL: &str = "https://api.openai.com/v1";
