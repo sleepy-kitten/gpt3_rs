@@ -1,5 +1,5 @@
 //! This module other modules that are used to interact with the api
-//! 
+//!
 //! Each of the modules contains a `module::Request` struct, usually crated with the `module::Builder`
 //! and a `module::Response` struct.
 //!  
@@ -25,6 +25,20 @@ pub trait RequestInfo {
     type Response;
     fn url(&self) -> String;
 }
+trait Auth {
+    fn auth<T>(self, token: T) -> Self
+    where
+        T: std::fmt::Display;
+}
+impl Auth for RequestBuilder {
+    fn auth<T>(self, token: T) -> Self
+    where
+        T: std::fmt::Display,
+    {
+        self.header("Content-Type", "application/json")
+            .bearer_auth(token)
+    }
+}
 
 impl<T> Action for T
 where
@@ -33,7 +47,9 @@ where
     type Response = T::Response;
     fn build_request(&self, client: &Client) -> reqwest::RequestBuilder {
         client
-            .init_post(&self.url())
+            .reqwest_client()
+            .post(&self.url())
+            .auth(client.gpt_token())
             .body(serde_json::to_string(self).unwrap())
     }
 }

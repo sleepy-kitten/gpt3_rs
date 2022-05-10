@@ -14,7 +14,7 @@ use crate::api::Action;
 ///     .prompt("what is 1 + 2?".into())
 ///     .build()
 ///     .unwrap();
-/// 
+///
 /// let response = client.request(request).await.unwrap();
 /// ```
 pub struct Client {
@@ -45,7 +45,7 @@ impl Client {
     ///     .prompt("what is 1 + 2?".into())
     ///     .build()
     ///     .unwrap();
-    /// 
+    ///
     /// let response = client.request(request).await.unwrap();
     /// ```
     pub async fn request<T>(&self, request: &T) -> Result<T::Response, Box<dyn Error>>
@@ -65,16 +65,7 @@ impl Client {
     }
     /// Get a reference to the client's request client.
     #[must_use]
-    pub fn request_client(&self) -> &reqwest::Client {
+    pub fn reqwest_client(&self) -> &reqwest::Client {
         &self.reqwest_client
-    }
-    pub(crate) fn init_post(&self, url: &str) -> RequestBuilder {
-        let builder = self.reqwest_client.post(url);
-        self.init_request(builder)
-    }
-    pub(crate) fn init_request(&self, builder: RequestBuilder) -> RequestBuilder {
-        builder
-            .header("Content-Type", "application/json")
-            .bearer_auth(self.gpt_token())
     }
 }
