@@ -1,6 +1,33 @@
+use reqwest::{IntoUrl, Method, Url};
 use serde::de::DeserializeOwned;
 
 use crate::{api::Action, error::Error};
+
+trait ReqwestClient {
+    type Builder;
+    fn request<U: IntoUrl>(&self, method: Method, url: U) -> Self::Builder;
+    fn new() -> Self;
+}
+impl ReqwestClient for reqwest::Client {
+    type Builder = reqwest::RequestBuilder;
+
+    fn request<U: IntoUrl>(&self, method: Method, url: U) -> Self::Builder {
+        reqwest::Client::request(self, method, url)
+    }
+    fn new() -> Self {
+        Self::new()
+    }
+}
+impl ReqwestClient for reqwest::blocking::Client {
+    type Builder = reqwest::blocking::RequestBuilder;
+
+    fn request<U: IntoUrl>(&self, method: Method, url: U) -> Self::Builder {
+        reqwest::blocking::Client::request(self, method, url)
+    }
+    fn new() -> Self {
+        Self::new()
+    }
+}
 
 /// A client for interacting with the OpenAi api
 /// # Example
