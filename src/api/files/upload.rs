@@ -23,7 +23,7 @@ where
         client
             .reqwest_client()
             .post(format!("{OPENAI_URL}/files/"))
-            .body(serde_json::to_string(self).unwrap())
+            .body(serde_json::to_string(self).expect("serialization failed"))
             .auth(client.gpt_token())
     }
 }
