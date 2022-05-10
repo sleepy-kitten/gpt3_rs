@@ -6,7 +6,7 @@ gpt3_rs is a rust library for interacting with OpenAi's gpt3
 
 - builder pattern to build request structs
 - easy to use
-- blazingly inefficient (:rocket:)
+- supports async and blocking
 
 ## Examples
 
@@ -42,7 +42,7 @@ async fn main() {
         .model(Model::Curie)
         .search_model(Model::Ada)
         .query("It is a rainy day :(")
-     .  .examples(&[
+        .examples(&[
             &["A happy moment", "Positive"],
             &["I am sad.", "Negative"],
             &["I am feeling awesome", "Positive"]
