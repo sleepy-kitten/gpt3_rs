@@ -32,7 +32,6 @@ pub(crate) type RequestBuilder = reqwest::blocking::RequestBuilder;
 
 pub mod api;
 mod client;
-mod error;
 mod into_vec;
 mod model;
 pub use client::Client;
@@ -127,7 +126,7 @@ mod tests {
             .build()
             .unwrap();
 
-        let response = client.request(&dbg!(request)).unwrap();
+        let response = client.request(&request).unwrap();
         println!("{:#?}", response);
     }
     #[test]
