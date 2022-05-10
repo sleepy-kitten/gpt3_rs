@@ -1,7 +1,22 @@
 use serde::{Deserialize, Serialize};
+use crate::api::{Action, Auth};
+use crate::OPENAI_URL;
+
+struct Request;
+
+impl Action for Request {
+    type Response = Response;
+
+    fn build_request(&self, client: &crate::Client) -> reqwest::RequestBuilder {
+        client
+            .reqwest_client()
+            .get(format!("{OPENAI_URL}/files"))
+            .auth(client.gpt_token())
+    }
+}
+
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-
 pub struct Response {
     /// List of files and metadata uploaded to the storage
     pub data: Vec<Data>,
