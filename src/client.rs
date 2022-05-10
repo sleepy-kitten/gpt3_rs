@@ -5,6 +5,18 @@ use serde::de::DeserializeOwned;
 
 use crate::api::Action;
 
+/// A client for interacting with the OpenAi api
+/// # Example
+/// ```
+/// let client = Client::new(token);
+/// let request = completions::Builder::default()
+/// .model(Model::Babbage)
+/// .prompt("what is 1 + 2?".into())
+/// .build()
+/// .unwrap();
+/// 
+/// let response = client.request(request).await.unwrap();
+/// ```
 pub struct Client {
     reqwest_client: reqwest::Client,
     gpt_token: String,
@@ -12,7 +24,7 @@ pub struct Client {
 impl Client {
     /// Creates a new client to send requests from
     /// # Example
-    /// ```rs
+    /// ```
     /// let token = std::env::var("GPT_API_TOKEN").unwrap();
     /// let client = Client::new(token);
     /// ```
@@ -27,7 +39,7 @@ impl Client {
     /// # Usage
     /// using a builder to build the request struct is strongly advised
     /// # Example
-    /// ```rs
+    /// ```
     /// let request = completions::Builder::default()
     ///     .model(Model::Babbage)
     ///     .prompt("what is 1 + 2?".into())

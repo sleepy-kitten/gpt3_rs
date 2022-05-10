@@ -1,3 +1,6 @@
+//! Classifies the specified query using provided examples.
+//! # Builder
+//! Use the [`classifications::Builder`][struct@Builder] to construct a [`classifications::Request`][Request] struct
 use std::collections::HashMap;
 
 use derive_builder::Builder;
@@ -10,12 +13,13 @@ use super::RequestInfo;
 
 /// # OpenAi documentation
 /// Classifies the specified query using provided examples.
+///
 /// The endpoint first searches over the labeled examples to select the ones most relevant for the particular query.
 /// Then, the relevant examples are combined with the query to construct a prompt to produce the final label via the completions endpoint.
 /// Labeled examples can be provided via an uploaded file, or explicitly listed in the request using the examples parameter for quick tests and small scale use cases.
 ///
 /// # Example
-/// ```rs
+/// ```
 /// let request = classification::Builder::default()
 ///     .model(Model::Curie)
 ///     .search_model(Model::Ada)
@@ -35,8 +39,8 @@ use super::RequestInfo;
 /// ```
 #[derive(Debug, Clone, PartialEq, Serialize, Builder)]
 #[builder_struct_attr(doc = "# Required")]
-#[builder_struct_attr(doc = "[`model`][RequestBuilder::model]")]
-#[builder_struct_attr(doc = "[`query`][RequestBuilder::query]")]
+#[builder_struct_attr(doc = "[`model`](Self::model())")]
+#[builder_struct_attr(doc = "[`query`](Self::query())")]
 #[builder_struct_attr(doc = "")]
 #[builder(name = "Builder")]
 pub struct Request {
@@ -113,6 +117,7 @@ pub struct Request {
     pub user: Option<String>,
 }
 
+/// A response corresponding to a [`Request`]
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Response {
     /// ?

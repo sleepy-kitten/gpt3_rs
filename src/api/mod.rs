@@ -1,3 +1,5 @@
+//! This module contains various structs that are used to interact with the api
+
 use reqwest::RequestBuilder;
 use serde::Serialize;
 
@@ -10,10 +12,12 @@ pub mod edits;
 pub mod files;
 pub mod searches;
 
+#[doc(hidden)]
 pub trait Action {
     type Response;
     fn build_request(&self, client: &Client) -> RequestBuilder;
 }
+#[doc(hidden)]
 pub trait RequestInfo {
     type Response;
     fn url(&self) -> String;

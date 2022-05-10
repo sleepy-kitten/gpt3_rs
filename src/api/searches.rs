@@ -1,3 +1,7 @@
+//! Given a query and a set of documents or labels, the model ranks each document based on its semantic similarity to the provided query.
+//!
+//! # Builder
+//! Use the [`searches::Builder`][struct@Builder] to construct a [`searches::Request`][Request] struct
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
@@ -9,7 +13,7 @@ use super::RequestInfo;
 ///
 /// Related guide: [Search](https://beta.openai.com/docs/guides/search)
 /// # Example
-/// ```rs
+/// ```
 /// let request = completion::Builder::default()
 ///     .model(Model::Curie)
 ///     .documents(vec![
@@ -22,13 +26,13 @@ use super::RequestInfo;
 ///     .unwrap();
 /// ```
 /// # Required
-/// ```rs
-/// model, query
-/// ```
+///
+/// [`model`], query
+///
 #[derive(Debug, Clone, PartialEq, Serialize, Builder)]
 #[builder_struct_attr(doc = "# Required")]
-#[builder_struct_attr(doc = "[`model`][RequestBuilder::model]")]
-#[builder_struct_attr(doc = "[`query`][RequestBuilder::query]")]
+#[builder_struct_attr(doc = "[`model`][Self::model()]")]
+#[builder_struct_attr(doc = "[`query`][Self::query()]")]
 #[builder_struct_attr(doc = "")]
 #[builder(name = "Builder")]
 pub struct Request {
@@ -63,6 +67,7 @@ pub struct Request {
     pub user: Option<String>,
 }
 
+/// A response corresponding to a [`Request`]
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Response {
     /// The ansers returned by this request

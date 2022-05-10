@@ -1,3 +1,6 @@
+//! Given a prompt, the model will return one or more predicted completions
+//! # Builder
+//! Use the [`completions::Builder`][struct@Builder] to construct a [`completions::Request`][Request] struct
 use std::collections::HashMap;
 
 use derive_builder::Builder;
@@ -9,7 +12,7 @@ use super::RequestInfo;
 /// # OpenAi documentation
 /// Given a prompt, the model will return one or more predicted completions, and can also return the probabilities of alternative tokens at each position.
 /// # Example
-/// ```rs
+/// ```
 /// let request = completion::Builder::default()
 ///     .model(Model::Curie)
 ///     .prompt("Say this is a test")
@@ -27,7 +30,7 @@ use super::RequestInfo;
 /// ```
 #[derive(Debug, Clone, PartialEq, Serialize, Builder)]
 #[builder_struct_attr(doc = "# Required")]
-#[builder_struct_attr(doc = "[`model`][RequestBuilder::model]")]
+#[builder_struct_attr(doc = "[`model`][Self::model()]")]
 #[builder_struct_attr(doc = "")]
 #[builder(name = "Builder")]
 pub struct Request {
@@ -127,7 +130,7 @@ pub struct Request {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub user: Option<String>,
 }
-
+/// A response corresponding to a [`Request`]
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Response {
     /// ?
