@@ -24,7 +24,7 @@ use super::RequestInfo;
 ///     .search_model(Model::Ada)
 ///     .question("which puppy is happy?")
 ///     .documents(&["Puppy A is happy","Puppy B is sad."])
-///     .example_context("In 2017, U.S. life expectancy was 78.6 years.")
+///     .examples_context("In 2017, U.S. life expectancy was 78.6 years.")
 ///     .examples(&[
 ///         &[
 ///             "What is human life expectancy in the United States?",
