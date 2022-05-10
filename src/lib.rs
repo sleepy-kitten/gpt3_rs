@@ -6,7 +6,7 @@
 //! There are a few apis missing and the documentation is incomplete
 //!
 //! # Examples
-//! ```
+//! ```ignore
 //! #[tokio::main]
 //! async fn main() {
 //!     let token = std::env::var("GPT_API_TOKEN").unwrap();
@@ -43,6 +43,7 @@ pub mod prelude {
     pub use crate::model::Model;
 }
 #[cfg(test)]
+#[cfg(feature = "blocking")]
 mod tests {
     use crate::prelude::*;
     #[test]

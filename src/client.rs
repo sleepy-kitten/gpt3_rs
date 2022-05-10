@@ -8,7 +8,7 @@ type RequestClient = reqwest::blocking::Client;
 
 /// A client for interacting with the OpenAi api
 /// # Example
-/// ```
+/// ```ignore
 /// let client = Client::new(token);
 /// let request = completions::Builder::default()
 ///     .model(Model::Babbage)
@@ -25,7 +25,7 @@ pub struct Client {
 impl Client {
     /// Creates a new client to send requests from
     /// # Example
-    /// ```
+    /// ```ignore
     /// let token = std::env::var("GPT_API_TOKEN").unwrap();
     /// let client = Client::new(token);
     /// ```
@@ -40,7 +40,7 @@ impl Client {
     /// # Usage
     /// using a builder to build the request struct is strongly advised
     /// # Example
-    /// ```
+    /// ```ignore
     /// let request = completions::Builder::default()
     ///     .model(Model::Babbage)
     ///     .prompt("what is 1 + 2?".into())
@@ -50,7 +50,7 @@ impl Client {
     /// let response = client.request(request).await.unwrap();
     /// ```
     #[cfg(not(feature = "blocking"))]
-    pub async fn request<T>(&self, request: &T) -> Result<T::Response, Error>
+    pub async fn request<T>(&self, request: &T) -> reqwest::Result<T::Response>
     where
         T: Action,
         T::Response: DeserializeOwned,

@@ -6,11 +6,11 @@ use serde::{Deserialize, Serialize};
 ///
 /// # Example
 /// allows:
-/// ```
+/// ```ignore
 /// &["some", "thing"]
 /// ```
 /// instead of: 
-/// ```
+/// ```ignore
 /// vec!["some".into(), "thing".into()]
 /// ```
 pub struct IntoVec<T>(Vec<T>);
