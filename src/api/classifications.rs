@@ -22,7 +22,7 @@ use super::RequestInfo;
 ///
 /// # Example
 /// ```
-/// let request = classification::Builder::default()
+/// let request = classifications::Builder::default()
 ///     .model(Model::Curie)
 ///     .search_model(Model::Ada)
 ///     .query("It is a rainy day :(")

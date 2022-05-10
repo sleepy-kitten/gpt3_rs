@@ -16,7 +16,7 @@ use super::RequestInfo;
 /// Related guide: [Search](https://beta.openai.com/docs/guides/search)
 /// # Example
 /// ```
-/// let request = completion::Builder::default()
+/// let request = searches::Builder::default()
 ///     .model(Model::Curie)
 ///     .documents(&[
 ///         "White house",
@@ -41,6 +41,7 @@ pub struct Request {
     #[serde(skip_serializing)]
     pub model: Model,
     /// Query to search against the documents.
+    #[builder(setter(into))]
     pub query: String,
     /// Up to 200 documents to search over, provided as a list of strings.
     ///The maximum document length (in tokens) is 2034 minus the number of tokens in the query.

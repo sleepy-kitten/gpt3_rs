@@ -1,6 +1,10 @@
 use serde::de::DeserializeOwned;
 
 use crate::{api::Action, error::Error};
+#[cfg(not(feature = "blocking"))]
+type RequestClient = reqwest::Client;
+#[cfg(feature = "blocking")]
+type RequestClient = reqwest::blocking::Client;
 
 /// A client for interacting with the OpenAi api
 /// # Example
@@ -15,10 +19,7 @@ use crate::{api::Action, error::Error};
 /// let response = client.request(request).await.unwrap();
 /// ```
 pub struct Client {
-    #[cfg(not(feature = "blocking"))]
-    reqwest_client: reqwest::Client,
-    #[cfg(feature = "blocking")]
-    reqwest_client: reqwest::blocking::Client,
+    reqwest_client: RequestClient,
     gpt_token: String,
 }
 impl Client {
@@ -30,10 +31,7 @@ impl Client {
     /// ```
     pub fn new(token: String) -> Self {
         Client {
-            #[cfg(not(feature = "blocking"))]
-            reqwest_client: reqwest::Client::new(),
-            #[cfg(feature = "blocking")]
-            requst_client: reqwest::blocking::Client::new(),
+            reqwest_client: RequestClient::new(),
             gpt_token: token,
         }
     }
@@ -62,13 +60,15 @@ impl Client {
         Ok(json)
     }
     #[cfg(feature = "blocking")]
-    pub fn request<T>(&self, request: &T) -> Result<T::Response, Error>
+    pub fn request<T>(&self, request: &T) -> reqwest::Result<T::Response>
     where
         T: Action,
         T::Response: DeserializeOwned,
     {
         let response = request.build_request(self).send()?;
-        let json = response.json()?;
+        //dbg!(&response.text());
+        //todo!();
+        let json = dbg!(response).json()?;
         Ok(json)
     }
     /// Get a reference to the client's gpt token.
@@ -78,7 +78,7 @@ impl Client {
     }
     /// Get a reference to the client's request client.
     #[must_use]
-    pub fn reqwest_client(&self) -> &reqwest::Client {
+    pub fn reqwest_client(&self) -> &RequestClient {
         &self.reqwest_client
     }
 }

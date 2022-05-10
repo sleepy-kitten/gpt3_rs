@@ -13,7 +13,7 @@ use super::RequestInfo;
 /// Given a prompt and an instruction, the model will return an edited version of the prompt.
 /// # Example
 /// ```
-/// let request = completion::Builder::default()
+/// let request = edits::Builder::default()
 ///     .model(Model::Curie)
 ///     .input("What day of the wek is it?")
 ///     .instruction("Fix the spelling mistakes")

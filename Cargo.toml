@@ -19,3 +19,6 @@ features = ["derive"]
 
 [features]
 blocking = ["reqwest/blocking"]
+
+[dev-dependencies]
+gpt3_rs = { path = ".", features = ["blocking"] }

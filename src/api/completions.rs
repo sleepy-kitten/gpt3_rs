@@ -15,7 +15,7 @@ use super::RequestInfo;
 /// Given a prompt, the model will return one or more predicted completions, and can also return the probabilities of alternative tokens at each position.
 /// # Example
 /// ```
-/// let request = completion::Builder::default()
+/// let request = completions::Builder::default()
 ///     .model(Model::Curie)
 ///     .prompt(&["Say this is a test"])
 ///     .max_tokens(5)

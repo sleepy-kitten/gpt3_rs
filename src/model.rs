@@ -45,7 +45,7 @@ pub enum Model {
 impl Model {
     pub(crate) fn url(&self, action: &str) -> String {
         (match self {
-            Model::Ada => format!("{OPENAI_URL}/engines/text-ada-001/"),
+            Model::Ada => format!("{OPENAI_URL}/engines/text-ada-001"),
             Model::Babbage => format!("{OPENAI_URL}/engines/text-babbage-001"),
             Model::Curie => format!("{OPENAI_URL}/engines/text-curie-001"),
             Model::Davinci => format!("{OPENAI_URL}/engines/text-davinci-002"),

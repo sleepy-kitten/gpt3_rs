@@ -4,7 +4,6 @@
 //! and a `module::Response` struct.
 //!  
 
-use reqwest::RequestBuilder;
 use serde::Serialize;
 
 use crate::client::Client;
@@ -18,7 +17,7 @@ pub mod searches;
 #[doc(hidden)]
 pub trait Action {
     type Response;
-    fn build_request(&self, client: &Client) -> RequestBuilder;
+    fn build_request(&self, client: &Client) -> crate::RequestBuilder;
 }
 #[doc(hidden)]
 pub trait RequestInfo {
@@ -30,7 +29,7 @@ trait Auth {
     where
         T: std::fmt::Display;
 }
-impl Auth for RequestBuilder {
+impl Auth for crate::RequestBuilder {
     fn auth<T>(self, token: T) -> Self
     where
         T: std::fmt::Display,
