@@ -11,6 +11,9 @@ gpt3_rs is a rust library for interacting with OpenAi's gpt3
 ## Example
 
 ```rust
+use gpt3_rs::Client;
+use gpt3_rs::api::*;
+use gpt3_rs::Model;
 #[tokio::main]
 async fn main() {
     let token = std::env::var("GPT_API_TOKEN").unwrap();
@@ -21,7 +24,7 @@ async fn main() {
         .prompt("what is 1 + 2?".into())
         .build()
         .unwrap();
-    let response = client.request(request).await.unwrap();
+    let response = client.request(&request).await.unwrap();
     let answer = &response.choices[0].text;
 
     println!("{answer}");
