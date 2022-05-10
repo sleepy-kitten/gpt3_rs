@@ -1,15 +1,16 @@
-//! Answers the specified question using the provided documents and examples.
+//! Answers questions from provided context
 //! # Builder
 //! Use the [`answers::Builder`][struct@Builder] to construct an [`answers::Request`][Request] struct
 use std::collections::HashMap;
 
-use crate::model::Model;
+use crate::{model::Model, into_vec::IntoVec};
 use crate::OPENAI_URL;
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
 use super::RequestInfo;
-
+/// Answers questions from provided context
+/// 
 /// # OpenAi documentation
 /// Answers the specified question using the provided documents and examples.
 ///
@@ -52,35 +53,37 @@ pub struct Request {
     //#[builder(!default, setter(!strip_option))]
     pub model: Model,
     /// Question to get answered.
-    //#[builder(!default, setter(!strip_option))]
+    #[builder(setter(into))]
     pub question: String,
     /// List of (question, answer) pairs that will help steer the model towards the tone and answer format you'd like.
     /// We recommend adding 2 to 3 examples.
     //#[builder(!default, setter(!strip_option))]
-    pub examples: Vec<Vec<String>>,
+    #[builder(setter(into))]
+    pub examples: IntoVec<Vec<String>>,
     /// A text snippet containing the contextual information used to generate the answers for the examples you provide.
     //#[builder(!default, setter(!strip_option))]
+    #[builder(setter(into))]
     pub examples_context: String,
     /// List of documents from which the answer for the input question should be derived.
     /// If this is an empty list, the question will be answered based on the question-answer examples.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub documents: Option<Vec<String>>,
+    pub documents: Option<IntoVec<String>>,
     /// The ID of an uploaded file that contains documents to search over. See upload file for how to upload a file of the desired format and purpose.
     /// You should specify either documents or a file, but not both.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub file: Option<String>,
     /// ID of the engine to use for Search. You can select one of ada, babbage, curie, or davinci.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub search_model: Option<Model>,
     /// The maximum number of documents to be ranked by Search when using file. Setting it to a higher value leads to improved accuracy but with increased latency and cost.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub max_rerank: Option<u64>,
     /// What sampling temperature to use. Higher values mean the model will take more risks and value 0 (argmax sampling) works better for scenarios with a well-defined answer.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub temperature: Option<f64>,
     /// Include the log probabilities on the logprobs most likely tokens, as well the chosen tokens.
@@ -96,9 +99,9 @@ pub struct Request {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub max_tokens: Option<u64>,
     /// Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub stop: Option<Vec<String>>,
+    pub stop: Option<IntoVec<String>>,
     /// How many answers to generate for each question.
     #[builder(default, setter(strip_option))]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -126,11 +129,11 @@ pub struct Request {
     pub return_prompt: Option<bool>,
     /// If an object name is in the list, we provide the full information of the object;
     /// otherwise, we only provide the object ID. Currently we support completion and file objects for expansion.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub expand: Option<Vec<String>>,
+    pub expand: Option<IntoVec<String>>,
     /// A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub user: Option<String>,
 }

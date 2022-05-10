@@ -1,13 +1,15 @@
-//! Given a query and a set of documents or labels, the model ranks each document based on its semantic similarity to the provided query.
+//! Rank provided documents based off of a query
 //!
 //! # Builder
 //! Use the [`searches::Builder`][struct@Builder] to construct a [`searches::Request`][Request] struct
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
-use crate::model::Model;
+use crate::{model::Model, into_vec::IntoVec};
 
 use super::RequestInfo;
+/// Rank provided documents based off of a query
+///
 /// # OpenAi documentation
 /// Given a query and a set of documents or labels, the model ranks each document based on its semantic similarity to the provided query.
 ///
@@ -43,12 +45,12 @@ pub struct Request {
     /// Up to 200 documents to search over, provided as a list of strings.
     ///The maximum document length (in tokens) is 2034 minus the number of tokens in the query.
     ///You should specify either documents or a file, but not both.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub documents: Option<Vec<String>>,
+    pub documents: Option<IntoVec<String>>,
     /// The ID of an uploaded file that contains documents to search over.
     /// You should specify either documents or a file, but not both.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub file: Option<String>,
     /// The maximum number of documents to be re-ranked and returned by search.
@@ -62,7 +64,7 @@ pub struct Request {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub return_metadata: Option<bool>,
     /// A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub user: Option<String>,
 }

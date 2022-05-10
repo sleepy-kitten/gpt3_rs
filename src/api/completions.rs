@@ -1,4 +1,4 @@
-//! Given a prompt, the model will return one or more predicted completions
+//! Create completions for a prompt
 //! # Builder
 //! Use the [`completions::Builder`][struct@Builder] to construct a [`completions::Request`][Request] struct
 use std::collections::HashMap;
@@ -6,9 +6,11 @@ use std::collections::HashMap;
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
-use crate::model::Model;
+use crate::{model::Model, into_vec::IntoVec};
 
 use super::RequestInfo;
+/// Create completions for a prompt
+/// 
 /// # OpenAi documentation
 /// Given a prompt, the model will return one or more predicted completions, and can also return the probabilities of alternative tokens at each position.
 /// # Example
@@ -39,11 +41,11 @@ pub struct Request {
     /// The prompt(s) to generate completions for, encoded as a string, array of strings, array of tokens, or array of token arrays.
     /// Note that <|endoftext|> is the document separator that the model sees during training,
     /// so if a prompt is not specified the model will generate as if from the beginning of a new document.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub prompt: Option<String>,
+    pub prompt: Option<IntoVec<String>>,
     /// The suffix that comes after a completion of inserted text.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub suffix: Option<String>,
     /// The maximum number of tokens to generate in the completion.
@@ -94,9 +96,9 @@ pub struct Request {
     #[builder(default, setter(strip_option))]
     pub logprobs: Option<u8>,
     /// Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub stop: Option<Vec<String>>,
+    pub stop: Option<IntoVec<String>>,
     /// Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
     ///
     /// [See more information about frequency and presence penalties](https://beta.openai.com/docs/api-reference/parameter-details)
@@ -126,7 +128,7 @@ pub struct Request {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub logit_bias: Option<HashMap<String, i8>>,
     /// A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub user: Option<String>,
 }

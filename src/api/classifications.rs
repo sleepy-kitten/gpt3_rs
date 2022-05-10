@@ -1,4 +1,4 @@
-//! Classifies the specified query using provided examples.
+//! Classifies a query from provided context
 //! # Builder
 //! Use the [`classifications::Builder`][struct@Builder] to construct a [`classifications::Request`][Request] struct
 use std::collections::HashMap;
@@ -6,11 +6,13 @@ use std::collections::HashMap;
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
+use crate::into_vec::IntoVec;
 use crate::model::Model;
 use crate::OPENAI_URL;
 
 use super::RequestInfo;
-
+/// Classifies a query from provided context
+///
 /// # OpenAi documentation
 /// Classifies the specified query using provided examples.
 ///
@@ -47,24 +49,25 @@ pub struct Request {
     /// ID of the engine to use for completion. You can select one of ada, babbage, curie, or davinci.
     pub model: Model,
     /// Query to be classified.
+    #[builder(setter(into))]
     pub query: String,
     /// A list of examples with labels, in the following format:
     /// `[["The movie is so interesting.", "Positive"], ["It is quite boring.", "Negative"], ...]`
     /// All the label strings will be normalized to be capitalized.
     /// You should specify either examples or file, but not both.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub examples: Option<Vec<Vec<String>>>,
+    pub examples: Option<IntoVec<Vec<String>>>,
     /// The ID of the uploaded file that contains training examples. See upload file for how to upload a file of the desired format and purpose.
     /// You should specify either examples or file, but not both.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub file: Option<String>,
     /// The set of categories being classified. If not specified, candidate labels will be automatically collected from the examples you provide.
     /// All the label strings will be normalized to be capitalized.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub labels: Option<Vec<String>>,
+    pub labels: Option<IntoVec<String>>,
     /// ID of the engine to use for Search. You can select one of ada, babbage, curie, or davinci.
     #[builder(default, setter(strip_option))]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -108,11 +111,11 @@ pub struct Request {
     pub return_metadata: Option<bool>,
     /// If an object name is in the list, we provide the full information of the object;
     /// otherwise, we only provide the object ID. Currently we support completion and file objects for expansion.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub expand: Option<Vec<String>>,
+    pub expand: Option<IntoVec<String>>,
     /// A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub user: Option<String>,
 }

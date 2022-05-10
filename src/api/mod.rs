@@ -1,10 +1,13 @@
-//! This module contains various structs that are used to interact with the api
+//! This module other modules that are used to interact with the api
+//! 
+//! Each of the modules contains a `module::Request` struct, usually crated with the `module::Builder`
+//! and a `module::Response` struct.
+//!  
 
 use reqwest::RequestBuilder;
 use serde::Serialize;
 
 use crate::client::Client;
-
 pub mod answers;
 pub mod classifications;
 pub mod completions;

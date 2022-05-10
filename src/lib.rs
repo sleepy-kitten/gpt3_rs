@@ -28,6 +28,7 @@
 
 mod client;
 mod model;
+mod into_vec;
 pub mod api;
 pub use client::Client;
 pub use model::Model;

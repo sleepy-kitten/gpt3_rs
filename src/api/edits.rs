@@ -1,4 +1,4 @@
-//! Given a prompt and an instruction, the model will return an edited version of the prompt.
+//!Edit text based off of an instruction
 //! # Builder
 //! Use the [`edits::Builder`][struct@Builder] to construct a [`edits::Request`][Request] struct
 use derive_builder::Builder;
@@ -7,7 +7,8 @@ use serde::{Deserialize, Serialize};
 use crate::model::Model;
 
 use super::RequestInfo;
-
+/// Edit text based off of an instruction
+/// 
 /// # OpenAi documentation
 /// Given a prompt and an instruction, the model will return an edited version of the prompt.
 /// # Example
@@ -33,10 +34,11 @@ pub struct Request {
     #[serde(skip_serializing)]
     pub model: Model,
     /// The input text to use as a starting point for the edit.
-    #[builder(default, setter(strip_option))]
+    #[builder(default, setter(strip_option, into))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub input: Option<String>,
     /// The instruction that tells the model how to edit the prompt.
+    #[builder(setter(into))]
     pub instruction: String,
     /// What sampling temperature to use. Higher values means the model will take more risks.
     /// Try 0.9 for more creative applications, and 0 (argmax sampling) for ones with a well-defined answer.
