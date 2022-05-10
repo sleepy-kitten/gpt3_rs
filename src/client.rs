@@ -1,9 +1,6 @@
-use std::error::Error;
-
-use reqwest::RequestBuilder;
 use serde::de::DeserializeOwned;
 
-use crate::api::Action;
+use crate::{api::Action, error::Error};
 
 /// A client for interacting with the OpenAi api
 /// # Example
@@ -48,7 +45,7 @@ impl Client {
     ///
     /// let response = client.request(request).await.unwrap();
     /// ```
-    pub async fn request<T>(&self, request: &T) -> Result<T::Response, Box<dyn Error>>
+    pub async fn request<T>(&self, request: &T) -> Result<T::Response, Error>
     where
         T: Action,
         T::Response: DeserializeOwned,

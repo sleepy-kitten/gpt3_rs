@@ -30,6 +30,7 @@ mod client;
 mod model;
 mod into_vec;
 pub mod api;
+mod error;
 pub use client::Client;
 pub use model::Model;
 
