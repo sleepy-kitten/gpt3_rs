@@ -8,10 +8,31 @@ use crate::OPENAI_URL;
 
 use super::RequestInfo;
 
+/// # OpenAi documentation
 /// Classifies the specified query using provided examples.
 /// The endpoint first searches over the labeled examples to select the ones most relevant for the particular query.
 /// Then, the relevant examples are combined with the query to construct a prompt to produce the final label via the completions endpoint.
 /// Labeled examples can be provided via an uploaded file, or explicitly listed in the request using the examples parameter for quick tests and small scale use cases.
+///
+/// # Example
+/// ```rs
+/// let request = classification::Builder::default()
+///     .model(Model::Curie)
+///     .search_model(Model::Ada)
+///     .query("It is a rainy day :(")
+///     .examples(vec![
+///         vec!["A happy moment".into(), "Positive".into()],
+///         vec!["I am sad.".into(), "Negative".into()],
+///         vec!["I am feeling awesome".into(), "Positive".into()]
+///      ])
+///     .labels(vec!["Positive".into(), "Negative".into(), "Neutral.into()"])
+///     .build()
+///     .unwrap();
+/// ```
+/// # Required
+/// ```rs
+/// model, query
+/// ```
 #[derive(Debug, Clone, PartialEq, Serialize, Builder)]
 #[builder_struct_attr(doc = "# Required")]
 #[builder_struct_attr(doc = "[`model`][RequestBuilder::model]")]
@@ -28,38 +49,38 @@ pub struct Request {
     /// All the label strings will be normalized to be capitalized.
     /// You should specify either examples or file, but not both.
     #[builder(default, setter(strip_option))]
-    #[serde(skip_serializing_if = "Option::is_none")] 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub examples: Option<Vec<Vec<String>>>,
     /// The ID of the uploaded file that contains training examples. See upload file for how to upload a file of the desired format and purpose.
     /// You should specify either examples or file, but not both.
     #[builder(default, setter(strip_option))]
-    #[serde(skip_serializing_if = "Option::is_none")] 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub file: Option<String>,
     /// The set of categories being classified. If not specified, candidate labels will be automatically collected from the examples you provide.
     /// All the label strings will be normalized to be capitalized.
     #[builder(default, setter(strip_option))]
-    #[serde(skip_serializing_if = "Option::is_none")] 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub labels: Option<Vec<String>>,
     /// ID of the engine to use for Search. You can select one of ada, babbage, curie, or davinci.
     #[builder(default, setter(strip_option))]
-    #[serde(skip_serializing_if = "Option::is_none")] 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub search_model: Option<Model>,
     /// What sampling temperature to use. Higher values mean the model will take more risks.
     /// Try 0.9 for more creative applications, and 0 (argmax sampling) for ones with a well-defined answer.
     #[builder(default, setter(strip_option))]
-    #[serde(skip_serializing_if = "Option::is_none")] 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub temperature: Option<f64>,
     /// Include the log probabilities on the logprobs most likely tokens, as well the chosen tokens. For example, if logprobs is 5, the API will return a list of the 5 most likely tokens.
     ///  The API will always return the logprob of the sampled token, so there may be up to logprobs+1 elements in the response.
     /// The maximum value for logprobs is 5. If you need more than this, please contact support@openai.com and describe your use case.
     /// When logprobs is set, completion will be automatically added into expand to get the logprobs.
     #[builder(default, setter(strip_option))]
-    #[serde(skip_serializing_if = "Option::is_none")] 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub logprobs: Option<u8>,
     /// The maximum number of examples to be ranked by Search when using file.
     /// Setting it to a higher value leads to improved accuracy but with increased latency and cost.
     #[builder(default, setter(strip_option))]
-    #[serde(skip_serializing_if = "Option::is_none")] 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub max_examples: Option<u64>,
     /// Modify the likelihood of specified tokens appearing in the completion.
     /// Accepts a json object that maps tokens (specified by their token ID in the GPT tokenizer) to an associated bias value from -100 to 100.
@@ -69,26 +90,26 @@ pub struct Request {
     /// values like -100 or 100 should result in a ban or exclusive selection of the relevant token.
     /// As an example, you can pass {"50256": -100} to prevent the <|endoftext|> token from being generated.
     #[builder(default, setter(strip_option))]
-    #[serde(skip_serializing_if = "Option::is_none")] 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub logit_bias: Option<HashMap<String, i8>>,
     /// If set to true, the returned JSON will include a "prompt" field containing the final prompt that was used to request a completion.
     /// This is mainly useful for debugging purposes.
     #[builder(default, setter(strip_option))]
-    #[serde(skip_serializing_if = "Option::is_none")] 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub return_prompt: Option<bool>,
     /// A special boolean flag for showing metadata. If set to true, each document entry in the returned JSON will contain a "metadata" field.
     /// This flag only takes effect when file is set.
     #[builder(default, setter(strip_option))]
-    #[serde(skip_serializing_if = "Option::is_none")] 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub return_metadata: Option<bool>,
     /// If an object name is in the list, we provide the full information of the object;
     /// otherwise, we only provide the object ID. Currently we support completion and file objects for expansion.
     #[builder(default, setter(strip_option))]
-    #[serde(skip_serializing_if = "Option::is_none")] 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub expand: Option<Vec<String>>,
     /// A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
     #[builder(default, setter(strip_option))]
-    #[serde(skip_serializing_if = "Option::is_none")] 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub user: Option<String>,
 }
 

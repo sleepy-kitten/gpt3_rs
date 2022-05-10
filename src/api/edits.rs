@@ -4,7 +4,22 @@ use serde::{Deserialize, Serialize};
 use crate::model::Model;
 
 use super::RequestInfo;
+
+/// # OpenAi documentation
 /// Given a prompt and an instruction, the model will return an edited version of the prompt.
+/// # Example
+/// ```rs
+/// let request = completion::Builder::default()
+///     .model(Model::Curie)
+///     .input("What day of the wek is it?".into())
+///     .instruction("Fix the spelling mistakes")
+///     .build()
+///     .unwrap();
+/// ```
+/// # Required
+/// ```rs
+/// model
+/// ```
 #[derive( Debug, Clone, PartialEq, Serialize, Builder)]
 #[builder_struct_attr(doc = "# Required")]
 #[builder_struct_attr(doc = "[`model`][RequestBuilder::model]")]

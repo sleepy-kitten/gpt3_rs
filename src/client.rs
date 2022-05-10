@@ -10,13 +10,33 @@ pub struct Client {
     gpt_token: String,
 }
 impl Client {
+    /// Creates a new client to send requests from
+    /// # Example
+    /// ```rs
+    /// let token = std::env::var("GPT_API_TOKEN").unwrap();
+    /// let client = Client::new(token);
+    /// ```
     pub fn new(token: String) -> Self {
         Client {
             reqwest_client: reqwest::Client::new(),
             gpt_token: token,
         }
     }
-    pub async fn request<T>(&self, request: T) -> Result<T::Response, Box<dyn Error>>
+    /// Creates a request from the passed struct
+    ///
+    /// # Usage
+    /// using a builder to build the request struct is strongly advised
+    /// # Example
+    /// ```rs
+    /// let request = completions::Builder::default()
+    ///     .model(Model::Babbage)
+    ///     .prompt("what is 1 + 2?".into())
+    ///     .build()
+    ///     .unwrap();
+    /// 
+    /// let response = client.request(request).await.unwrap();
+    /// ```
+    pub async fn request<T>(&self, request: &T) -> Result<T::Response, Box<dyn Error>>
     where
         T: Action,
         T::Response: DeserializeOwned,
@@ -36,11 +56,11 @@ impl Client {
     pub fn request_client(&self) -> &reqwest::Client {
         &self.reqwest_client
     }
-    crate fn init_post(&self, url: &str) -> RequestBuilder {
+    pub(crate) fn init_post(&self, url: &str) -> RequestBuilder {
         let builder = self.reqwest_client.post(url);
         self.init_request(builder)
     }
-    crate fn init_request(&self, builder: RequestBuilder) -> RequestBuilder {
+    pub(crate) fn init_request(&self, builder: RequestBuilder) -> RequestBuilder {
         builder
             .header("Content-Type", "application/json")
             .bearer_auth(self.gpt_token())

@@ -4,9 +4,27 @@ use serde::{Deserialize, Serialize};
 use crate::model::Model;
 
 use super::RequestInfo;
+/// # OpenAi documentation
 /// Given a query and a set of documents or labels, the model ranks each document based on its semantic similarity to the provided query.
 ///
 /// Related guide: [Search](https://beta.openai.com/docs/guides/search)
+/// # Example
+/// ```rs
+/// let request = completion::Builder::default()
+///     .model(Model::Curie)
+///     .documents(vec![
+///         "White house".into(),
+///         "hospital".into(),
+///         "school".into(),
+///     ])
+///     .query("the president".into())
+///     .build()
+///     .unwrap();
+/// ```
+/// # Required
+/// ```rs
+/// model, query
+/// ```
 #[derive(Debug, Clone, PartialEq, Serialize, Builder)]
 #[builder_struct_attr(doc = "# Required")]
 #[builder_struct_attr(doc = "[`model`][RequestBuilder::model]")]

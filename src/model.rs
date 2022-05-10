@@ -9,7 +9,7 @@ pub enum Model {
     ///  **Parsing text**, **simple classification**, **address correction**, **keywords**
     /// # description
     /// Capable of very simple tasks, usually the fastest model in the GPT-3 series, and lowest cost.
-    /// Ada is usually the fastest model and can perform tasks like parsing text, address correction and certain kinds of classification tasks that don’t require too much nuance. 
+    /// Ada is usually the fastest model and can perform tasks like parsing text, address correction and certain kinds of classification tasks that don’t require too much nuance.
     /// Ada’s performance can often be improved by providing more context.
     Ada,
     /// # Good at
@@ -43,7 +43,7 @@ pub enum Model {
 }
 
 impl Model {
-    crate fn url(&self, action: &str) -> String {
+    pub(crate) fn url(&self, action: &str) -> String {
         (match self {
             Model::Ada => format!("{OPENAI_URL}/engines/text-ada-001/"),
             Model::Babbage => format!("{OPENAI_URL}/engines/text-babbage-001"),

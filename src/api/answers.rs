@@ -7,11 +7,34 @@ use serde::{Deserialize, Serialize};
 
 use super::RequestInfo;
 
-/// Some test thing
-pub struct Tester;
+/// # OpenAi documentation
 /// Answers the specified question using the provided documents and examples.
 /// The endpoint first searches over provided documents or files to find relevant context.
 /// The relevant context is combined with the provided examples and question to create the prompt for completion.
+///
+/// # Example
+/// ```rs
+/// let request = answers::Builder::default()
+///     .model(Model::Curie)
+///     .search_model(Model::Ada)
+///     .question("which puppy is happy?")
+///     .documents(vec!["Puppy A is happy".into(),"Puppy B is sad.".into()])
+///     .example_context("In 2017, U.S. life expectancy was 78.6 years.")
+///     .examples(vec![
+///         vec![
+///             "What is human life expectancy in the United States?".into(),
+///             "78 years.".into()
+///         ]
+///     ])
+///     .max_tokens(5)
+///     .stop(vec!["\n".into(), "<|endoftext|>".into()])
+///     .build()
+///     .unwrap();
+/// ```
+/// # Required
+/// ```rs
+/// model, question, examples, examples_context
+/// ```
 #[derive(Debug, Clone, PartialEq, Serialize, Builder)]
 #[builder_struct_attr(doc = "# Required")]
 #[builder_struct_attr(doc = "[`model`][RequestBuilder::model]")]

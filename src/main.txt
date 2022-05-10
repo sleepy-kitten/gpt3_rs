@@ -1,12 +1,10 @@
 #![feature(derive_default_enum)]
 #![feature(crate_visibility_modifier)]
 
-use crate::{api::*, client::Client, model::Model};
+use main::{api::*, client::Client, model::Model};
 
-#[macro_use]
-mod macros;
-pub mod api;
-pub mod client;
+mod api;
+mod client;
 mod model;
 
 const OPENAI_URL: &str = "https://api.openai.com/v1";
