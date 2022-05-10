@@ -73,6 +73,6 @@ pub struct Choice {
 impl RequestInfo for Request {
     type Response = Response;
     fn url(&self) -> String {
-        self.model.url("/edits")
+        self.model.edit_url("/edits")
     }
 }
