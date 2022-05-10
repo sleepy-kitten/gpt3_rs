@@ -17,12 +17,12 @@ use super::RequestInfo;
 /// ```
 /// let request = completion::Builder::default()
 ///     .model(Model::Curie)
-///     .prompt("Say this is a test")
+///     .prompt(&["Say this is a test"])
 ///     .max_tokens(5)
 ///     .temperature(1.0)
 ///     .top_p(1.0)
 ///     .n(1)
-///     .stop("\n")
+///     .stop(&["\n"])
 ///     .build()
 ///     .unwrap();
 /// ```

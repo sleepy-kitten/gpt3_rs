@@ -3,14 +3,14 @@
 //! Use the [`answers::Builder`][struct@Builder] to construct an [`answers::Request`][Request] struct
 use std::collections::HashMap;
 
-use crate::{model::Model, into_vec::IntoVec};
 use crate::OPENAI_URL;
+use crate::{into_vec::IntoVec, model::Model};
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
 use super::RequestInfo;
 /// Answers questions from provided context
-/// 
+///
 /// # OpenAi documentation
 /// Answers the specified question using the provided documents and examples.
 ///
@@ -23,16 +23,16 @@ use super::RequestInfo;
 ///     .model(Model::Curie)
 ///     .search_model(Model::Ada)
 ///     .question("which puppy is happy?")
-///     .documents(vec!["Puppy A is happy".into(),"Puppy B is sad.".into()])
+///     .documents(&["Puppy A is happy","Puppy B is sad."])
 ///     .example_context("In 2017, U.S. life expectancy was 78.6 years.")
-///     .examples(vec![
-///         vec![
-///             "What is human life expectancy in the United States?".into(),
-///             "78 years.".into()
+///     .examples(&[
+///         &[
+///             "What is human life expectancy in the United States?",
+///             "78 years."
 ///         ]
 ///     ])
 ///     .max_tokens(5)
-///     .stop(vec!["\n".into(), "<|endoftext|>".into()])
+///     .stop(&["\n", "<|endoftext|>"])
 ///     .build()
 ///     .unwrap();
 /// ```

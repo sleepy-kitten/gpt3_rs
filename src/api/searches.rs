@@ -18,12 +18,12 @@ use super::RequestInfo;
 /// ```
 /// let request = completion::Builder::default()
 ///     .model(Model::Curie)
-///     .documents(vec![
-///         "White house".into(),
-///         "hospital".into(),
-///         "school".into(),
+///     .documents(&[
+///         "White house",
+///         "hospital",
+///         "school",
 ///     ])
-///     .query("the president".into())
+///     .query("the president")
 ///     .build()
 ///     .unwrap();
 /// ```

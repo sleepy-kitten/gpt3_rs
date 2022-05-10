@@ -26,12 +26,12 @@ use super::RequestInfo;
 ///     .model(Model::Curie)
 ///     .search_model(Model::Ada)
 ///     .query("It is a rainy day :(")
-///     .examples(vec![
-///         vec!["A happy moment".into(), "Positive".into()],
-///         vec!["I am sad.".into(), "Negative".into()],
-///         vec!["I am feeling awesome".into(), "Positive".into()]
+///     .examples(&[
+///         &["A happy moment", "Positive"],
+///         &["I am sad.", "Negative"],
+///         &["I am feeling awesome", "Positive"]
 ///      ])
-///     .labels(vec!["Positive".into(), "Negative".into(), "Neutral.into()"])
+///     .labels(&["Positive", "Negative", "Neutral"])
 ///     .build()
 ///     .unwrap();
 /// ```

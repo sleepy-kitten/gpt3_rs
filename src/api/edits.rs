@@ -15,7 +15,7 @@ use super::RequestInfo;
 /// ```
 /// let request = completion::Builder::default()
 ///     .model(Model::Curie)
-///     .input("What day of the wek is it?".into())
+///     .input("What day of the wek is it?")
 ///     .instruction("Fix the spelling mistakes")
 ///     .build()
 ///     .unwrap();
