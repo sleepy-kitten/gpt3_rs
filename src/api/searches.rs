@@ -15,7 +15,7 @@ use super::RequestInfo;
 ///
 /// Related guide: [Search](https://beta.openai.com/docs/guides/search)
 /// # Example
-/// ```
+/// ```ignore
 /// let request = searches::Builder::default()
 ///     .model(Model::Curie)
 ///     .documents(&[
@@ -29,7 +29,7 @@ use super::RequestInfo;
 /// ```
 /// # Required
 ///
-/// [`model`], query
+/// `model`, `query
 ///
 #[derive(Debug, Clone, PartialEq, Serialize, Builder)]
 #[builder_struct_attr(doc = "# Required")]

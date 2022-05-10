@@ -14,7 +14,7 @@ use super::RequestInfo;
 /// # OpenAi documentation
 /// Given a prompt, the model will return one or more predicted completions, and can also return the probabilities of alternative tokens at each position.
 /// # Example
-/// ```
+/// ```ignore
 /// let request = completions::Builder::default()
 ///     .model(Model::Curie)
 ///     .prompt(&["Say this is a test"])
@@ -27,7 +27,7 @@ use super::RequestInfo;
 ///     .unwrap();
 /// ```
 /// # Required
-/// ```rs
+/// ```ignore
 /// model
 /// ```
 #[derive(Debug, Clone, PartialEq, Serialize, Builder)]

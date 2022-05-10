@@ -18,7 +18,7 @@ use super::RequestInfo;
 /// The relevant context is combined with the provided examples and question to create the prompt for completion.
 ///
 /// # Example
-/// ```
+/// ```ignore
 /// let request = answers::Builder::default()
 ///     .model(Model::Curie)
 ///     .search_model(Model::Ada)
@@ -37,7 +37,7 @@ use super::RequestInfo;
 ///     .unwrap();
 /// ```
 /// # Required
-/// ```
+/// ```ignore
 /// model, question, examples, examples_context
 /// ```
 #[derive(Debug, Clone, PartialEq, Serialize, Builder)]

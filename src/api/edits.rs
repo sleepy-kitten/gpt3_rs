@@ -12,7 +12,7 @@ use super::RequestInfo;
 /// # OpenAi documentation
 /// Given a prompt and an instruction, the model will return an edited version of the prompt.
 /// # Example
-/// ```
+/// ```ignore
 /// let request = edits::Builder::default()
 ///     .model(Model::Curie)
 ///     .input("What day of the wek is it?")
@@ -21,7 +21,7 @@ use super::RequestInfo;
 ///     .unwrap();
 /// ```
 /// # Required
-/// ```
+/// ```ignore
 /// model
 /// ```
 #[derive(Debug, Clone, PartialEq, Serialize, Builder)]
