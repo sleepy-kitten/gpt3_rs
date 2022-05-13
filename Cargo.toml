@@ -2,6 +2,12 @@
 name = "gpt3_rs"
 version = "0.2.0"
 edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "An API wrapper for OpenAi's gpt-3"
+repository = "https://github.com/Sleepy-Kitten/gpt3_rs"
+keywords = ["gpt-3", "gpt3", "OpenAi", "ai", "api"]
+categories = ["api-bindings"]
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -20,5 +26,3 @@ features = ["derive"]
 [features]
 blocking = ["reqwest/blocking"]
 
-[dev-dependencies]
-gpt3_rs = { path = ".", features = ["blocking"] }

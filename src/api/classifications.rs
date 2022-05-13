@@ -21,7 +21,7 @@ use super::{completions, LogProbs, RequestInfo};
 /// Labeled examples can be provided via an uploaded file, or explicitly listed in the request using the examples parameter for quick tests and small scale use cases.
 ///
 /// # Example
-/// ```
+/// ```ignore
 /// let request = classifications::Builder::default()
 ///     .model(Model::Curie)
 ///     .search_model(Model::Ada)
@@ -36,7 +36,7 @@ use super::{completions, LogProbs, RequestInfo};
 ///     .unwrap();
 /// ```
 /// # Required
-/// ```rs
+/// ```ignore
 /// model, query
 /// ```
 #[derive(Debug, Clone, PartialEq, Serialize, Builder)]

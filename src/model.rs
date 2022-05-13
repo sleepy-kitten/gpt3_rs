@@ -51,4 +51,10 @@ impl Model {
             Model::Davinci => format!("{OPENAI_URL}/engines/text-davinci-002"),
         }) + action
     }
+    pub(crate) fn edit_url(&self, action: &str) -> String {
+        (match self {
+            Model::Davinci => format!("{OPENAI_URL}/engines/text-davinci-edit-001"),
+            _ => panic!("editing only supports davinci")
+        }) + action
+    }
 }
