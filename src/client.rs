@@ -50,7 +50,7 @@ impl Client {
     /// let response = client.request(request).await.unwrap();
     /// ```
     #[cfg(not(feature = "blocking"))]
-    pub async fn request<T>(&self, request: &T) -> Result<T::Response, Error>
+    pub async fn request<T>(&self, request: &T) -> reqwest::Result<T::Response>
     where
         T: Action,
         T::Response: DeserializeOwned,
