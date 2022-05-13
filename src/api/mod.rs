@@ -24,6 +24,16 @@ pub struct LogProbs {
     pub text_offset: Vec<u64>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum Purpose {
+    Search,
+    Answers,
+    Classifications,
+    #[serde(rename = "fine-tune")]
+    FineTuning,
+}
+
 #[doc(hidden)]
 pub trait Action {
     type Response;

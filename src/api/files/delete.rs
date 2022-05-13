@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use crate::api::{Action, Auth};
 use crate::OPENAI_URL;
 
-struct Request {
+pub struct Request {
     file_id: String,
 }
 

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use crate::api::{Action, Auth};
 use crate::OPENAI_URL;
 
-struct Request {
+pub struct Request {
     file_id: String,
 }
 
@@ -12,7 +12,7 @@ impl Action for Request {
     fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {
         client
             .reqwest_client()
-            .delete(format!("{OPENAI_URL}/files/{}/content", self.file_id))
+            .get(format!("{OPENAI_URL}/files/{}/content", self.file_id))
             .auth(client.gpt_token())
     }
 }

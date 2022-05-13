@@ -1,8 +1,9 @@
 use serde::{Deserialize, Serialize};
 use crate::api::{Action, Auth};
 use crate::OPENAI_URL;
+use crate::prelude::Purpose;
 
-struct Request {
+pub struct Request {
     file_id: String,
 }
 
@@ -16,7 +17,7 @@ impl Action for Request {
             .auth(client.gpt_token())
     }
 }
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Response {
     /// The file id used to identify the file
     pub id: String,
@@ -29,5 +30,5 @@ pub struct Response {
     /// The name of the file
     pub filename: String,
     /// The purpose of the file
-    pub purpose: String,
+    pub purpose: Purpose,
 }
