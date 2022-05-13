@@ -62,11 +62,32 @@ impl Client {
     #[cfg(feature = "blocking")]
     pub fn request<T>(&self, request: &T) -> reqwest::Result<T::Response>
     where
+    T: Action,
+    T::Response: DeserializeOwned,
+    {
+        let response = request.build_request(self).send()?;
+        let json = response.json()?;
+        Ok(json)
+    }
+
+    #[cfg(not(feature = "blocking"))]
+    pub async fn request_raw<T>(&self, request: &T) -> reqwest::Result<String>
+    where
+        T: Action,
+        T::Response: DeserializeOwned,
+    {
+        let response = request.build_request(self).send().await?;
+        let json = response.text().await?;
+        Ok(json)
+    }
+    #[cfg(feature = "blocking")]
+    pub fn request_raw<T>(&self, request: &T) -> reqwest::Result<String>
+    where
         T: Action,
         T::Response: DeserializeOwned,
     {
         let response = request.build_request(self).send()?;
-        let json = response.json()?;
+        let json = response.text()?;
         Ok(json)
     }
     /// Get a reference to the client's gpt token.
