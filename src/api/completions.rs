@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{model::Model, into_vec::IntoVec};
 
-use super::RequestInfo;
+use super::{RequestInfo, LogProbs};
 /// Create completions for a prompt
 /// 
 /// # OpenAi documentation
@@ -135,7 +135,7 @@ pub struct Request {
 /// A response corresponding to a [`Request`]
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Response {
-    /// ?
+    /// completion id
     pub id: String,
     /// The requested action
     pub object: String,
@@ -154,10 +154,11 @@ pub struct Choice {
     /// The index of this choice
     pub index: usize,
     /// A list of the n most likely tokens
-    pub logprobs: Option<Vec<String>>,
+    pub logprobs: Option<LogProbs>,
     /// reason why the model finished
     pub finish_reason: String,
 }
+
 impl RequestInfo for Request {
     type Response = Response;
     fn url(&self) -> String {

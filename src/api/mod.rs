@@ -4,7 +4,9 @@
 //! and a `module::Response` struct.
 //!  
 
-use serde::Serialize;
+use std::collections::HashMap;
+
+use serde::{Deserialize, Serialize};
 
 use crate::client::Client;
 pub mod answers;
@@ -13,6 +15,14 @@ pub mod completions;
 pub mod edits;
 pub mod files;
 pub mod searches;
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct LogProbs {
+    pub tokens: Vec<String>,
+    pub token_logprobs: Vec<Option<f64>>,
+    pub top_logprobs: Vec<Option<HashMap<String, f64>>>,
+    pub text_offset: Vec<u64>,
+}
 
 #[doc(hidden)]
 pub trait Action {
