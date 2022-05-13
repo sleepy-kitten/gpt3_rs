@@ -35,7 +35,7 @@ impl Client {
             gpt_token: token,
         }
     }
-    /// Creates a request from the passed struct
+    /// Creates a request from the passed struct and returns a Deserialized struct
     ///
     /// # Usage
     /// using a builder to build the request struct is strongly advised
@@ -59,17 +59,44 @@ impl Client {
         let json = response.json().await?;
         Ok(json)
     }
+    /// Creates a request from the passed struct and returns a Deserialized struct
+    ///
+    /// # Usage
+    /// using a builder to build the request struct is strongly advised
+    /// # Example
+    /// ```ignore
+    /// let request = completions::Builder::default()
+    ///     .model(Model::Babbage)
+    ///     .prompt("what is 1 + 2?".into())
+    ///     .build()
+    ///     .unwrap();
+    ///
+    /// let response = client.request(request).await.unwrap();
+    /// ```
     #[cfg(feature = "blocking")]
     pub fn request<T>(&self, request: &T) -> reqwest::Result<T::Response>
     where
-    T: Action,
-    T::Response: DeserializeOwned,
+        T: Action,
+        T::Response: DeserializeOwned,
     {
         let response = request.build_request(self).send()?;
         let json = response.json()?;
         Ok(json)
     }
-
+    /// Creates a request from the passed struct and returns a String
+    ///
+    /// # Usage
+    /// using a builder to build the request struct is strongly advised
+    /// # Example
+    /// ```ignore
+    /// let request = completions::Builder::default()
+    ///     .model(Model::Babbage)
+    ///     .prompt("what is 1 + 2?".into())
+    ///     .build()
+    ///     .unwrap();
+    ///
+    /// let response = client.request(request).await.unwrap();
+    /// ```
     #[cfg(not(feature = "blocking"))]
     pub async fn request_raw<T>(&self, request: &T) -> reqwest::Result<String>
     where
@@ -80,6 +107,20 @@ impl Client {
         let json = response.text().await?;
         Ok(json)
     }
+    /// Creates a request from the passed struct and returns a String
+    ///
+    /// # Usage
+    /// using a builder to build the request struct is strongly advised
+    /// # Example
+    /// ```ignore
+    /// let request = completions::Builder::default()
+    ///     .model(Model::Babbage)
+    ///     .prompt("what is 1 + 2?".into())
+    ///     .build()
+    ///     .unwrap();
+    ///
+    /// let response = client.request(request).await.unwrap();
+    /// ```
     #[cfg(feature = "blocking")]
     pub fn request_raw<T>(&self, request: &T) -> reqwest::Result<String>
     where
