@@ -1,6 +1,6 @@
 use serde::de::DeserializeOwned;
 
-use crate::{api::Action, error::Error};
+use crate::api::Action;
 #[cfg(not(feature = "blocking"))]
 type RequestClient = reqwest::Client;
 #[cfg(feature = "blocking")]
@@ -66,9 +66,7 @@ impl Client {
         T::Response: DeserializeOwned,
     {
         let response = request.build_request(self).send()?;
-        //dbg!(&response.text());
-        //todo!();
-        let json = dbg!(response).json()?;
+        let json = response.json()?;
         Ok(json)
     }
     /// Get a reference to the client's gpt token.
