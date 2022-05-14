@@ -9,6 +9,9 @@ pub mod list;
 pub mod metadata;
 pub mod upload;
 
+/// A file with the purpose "search"
+///
+/// has a text field
 pub trait FilePurpose {
     fn purpose(&self) -> Purpose;
 }

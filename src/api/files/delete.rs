@@ -3,6 +3,9 @@ use crate::api::{Action, Auth};
 use crate::OPENAI_URL;
 use crate::client::NormalRequest;
 
+/// # OpenAi documentation
+/// 
+/// Delete a file.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Request {
     pub file_id: String,

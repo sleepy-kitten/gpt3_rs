@@ -1,6 +1,13 @@
 use crate::api::{Action, Auth};
 use crate::OPENAI_URL;
 
+/// # OpenAi documentation
+///
+/// Returns the contents of the specified file.
+///
+/// This differs from [`files::content`][crate::api::files::content], because [`files::content_checked`][crate::api::files::content_checked] will make 2 requests instead of 1.
+/// 
+/// The first one will get the metadata of the file, and the second one will get the content and attempt to deserialize it according to the metadata. 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Request {
     pub file_id: String,

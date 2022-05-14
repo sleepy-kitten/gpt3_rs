@@ -4,6 +4,9 @@ use crate::client::NormalRequest;
 use crate::OPENAI_URL;
 use serde::{Deserialize, Serialize};
 
+/// # OpenAi documentation
+///
+/// Returns a list of files that belong to the user's organization.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Request;
 

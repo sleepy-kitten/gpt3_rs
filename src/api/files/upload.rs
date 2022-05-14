@@ -6,7 +6,11 @@ use serde::{Deserialize, Serialize};
 
 use super::FilePurpose;
 
-
+/// # OpenAi documentation
+/// 
+/// Upload a file that contains document(s) to be used across various endpoints/features. 
+/// Currently, the size of all the files uploaded by one organization can be up to 1 GB. 
+/// Please contact us if you need to increase the storage limit.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Request<T>
 where
