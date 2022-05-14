@@ -49,7 +49,7 @@ where
     fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {
         client
             .reqwest_client()
-            .post(format!("{OPENAI_URL}/files/"))
+            .post(format!("{OPENAI_URL}/files"))
             .auth(client.gpt_token())
             .json(&RequestInternal::from(self))
     }
