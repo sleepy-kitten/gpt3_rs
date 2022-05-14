@@ -37,29 +37,41 @@ pub struct FineTuning {
     pub prompt: String,
     pub completion: String,
 }
+#[derive(Debug, Clone)]
 pub struct Raw {
     pub data: String,
     pub purpose: Purpose,
 }
 
-impl<T: Serialize + DeserializeOwned> FilePurpose for Search<T> {
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct File<T> {
+    pub lines: Vec<T>,
+}
+
+impl<T> File<T> {
+    pub fn new(lines: Vec<T>) -> Self {
+        File { lines }
+    }
+}
+
+impl<T: Serialize + DeserializeOwned> FilePurpose for File<Search<T>> {
     fn purpose(&self) -> Purpose {
         Purpose::Search
     }
 }
-impl<T: Serialize> FilePurpose for Answers<T> {
+impl<T: Serialize> FilePurpose for File<Answers<T>> {
     fn purpose(&self) -> Purpose {
         Purpose::Answers
     }
 }
 
-impl<T: Serialize> FilePurpose for Classifications<T> {
+impl<T: Serialize> FilePurpose for File<Classifications<T>> {
     fn purpose(&self) -> Purpose {
         Purpose::Classifications
     }
 }
 
-impl FilePurpose for FineTuning {
+impl FilePurpose for File<FineTuning> {
     fn purpose(&self) -> Purpose {
         Purpose::FineTuning
     }
