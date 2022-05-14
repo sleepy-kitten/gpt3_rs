@@ -45,17 +45,26 @@ pub trait RequestInfo {
     fn url(&self) -> String;
 }
 trait Auth {
+    fn auth_header<T>(self, token: T) -> Self
+    where
+        T: std::fmt::Display;
     fn auth<T>(self, token: T) -> Self
     where
         T: std::fmt::Display;
 }
 impl Auth for crate::RequestBuilder {
-    fn auth<T>(self, token: T) -> Self
+    fn auth_header<T>(self, token: T) -> Self
     where
         T: std::fmt::Display,
     {
         self.header("Content-Type", "application/json")
             .bearer_auth(token)
+    }
+    fn auth<T>(self, token: T) -> Self
+    where
+        T: std::fmt::Display,
+    {
+        self.bearer_auth(token)
     }
 }
 
@@ -68,7 +77,7 @@ where
         client
             .reqwest_client()
             .post(&self.url())
-            .auth(client.gpt_token())
+            .auth_header(client.gpt_token())
             .json(self)
     }
 }
