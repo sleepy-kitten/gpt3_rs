@@ -45,7 +45,7 @@ pub mod prelude {
 #[cfg(test)]
 #[cfg(feature = "blocking")]
 mod tests {
-    use crate::prelude::*;
+    use crate::{client::Request, prelude::*};
     #[test]
     fn answers() {
         let token = std::env::var("GPT_API_TOKEN").unwrap();
@@ -67,7 +67,7 @@ mod tests {
             .build()
             .unwrap();
 
-        let response = client.request(&request).unwrap();
+        let response = request.request(&client).unwrap();
         println!("{:#?}", response);
     }
     #[test]
@@ -89,7 +89,7 @@ mod tests {
             .build()
             .unwrap();
 
-        let response = client.request(&request).unwrap();
+        let response = request.request(&client).unwrap();
         println!("{:#?}", response);
     }
     #[test]
@@ -109,7 +109,7 @@ mod tests {
             .build()
             .unwrap();
 
-        let response = client.request(&request).unwrap();
+        let response = request.request(&client).unwrap();
         println!("{:#?}", response);
     }
     #[test]
@@ -125,7 +125,7 @@ mod tests {
             .build()
             .unwrap();
 
-        let response = client.request(&request).unwrap();
+        let response = request.request(&client).unwrap();
         println!("{:#?}", response);
     }
     #[test]
@@ -141,7 +141,23 @@ mod tests {
             .build()
             .unwrap();
 
-        let response = client.request(&request).unwrap();
+        let response = request.request(&client).unwrap();
+        println!("{:#?}", response);
+    }
+    #[test]
+    fn trait_impl() {
+        let token = std::env::var("GPT_API_TOKEN").unwrap();
+
+        let client = Client::new(token);
+
+        let request = searches::Builder::default()
+            .model(Model::Ada)
+            .documents(&["White house", "hospital", "school"])
+            .query("the president")
+            .build()
+            .unwrap();
+
+        let response = request.request(&client).unwrap();
         println!("{:#?}", response);
     }
 }

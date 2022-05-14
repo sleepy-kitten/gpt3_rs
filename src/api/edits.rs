@@ -4,7 +4,7 @@
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
-use crate::model::Model;
+use crate::{model::Model, client::NormalRequest};
 
 use super::RequestInfo;
 /// Edit text based off of an instruction
@@ -76,3 +76,5 @@ impl RequestInfo for Request {
         self.model.edit_url("/edits")
     }
 }
+impl NormalRequest for Request {}
+

@@ -1,6 +1,7 @@
 use crate::api::files;
 use crate::api::{Action, Auth};
 use crate::OPENAI_URL;
+use crate::client::NormalRequest;
 use serde::{Deserialize, Serialize};
 
 pub struct Request;
@@ -23,3 +24,4 @@ pub struct Response {
     /// Action of the request
     pub object: String,
 }
+impl NormalRequest for Request {}

@@ -6,7 +6,7 @@ use std::collections::HashMap;
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
-use crate::into_vec::IntoVec;
+use crate::{into_vec::IntoVec, client::NormalRequest};
 use crate::model::Model;
 use crate::OPENAI_URL;
 
@@ -155,3 +155,5 @@ impl RequestInfo for Request {
         format!("{OPENAI_URL}/classifications")
     }
 }
+impl NormalRequest for Request {}
+

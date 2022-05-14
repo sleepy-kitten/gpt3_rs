@@ -1,7 +1,5 @@
-use serde::{Deserialize, Serialize};
 use crate::api::{Action, Auth};
 use crate::OPENAI_URL;
-use crate::client::NormalRequest;
 
 pub struct Request {
     pub file_id: String,
@@ -17,8 +15,10 @@ impl Action for Request {
             .auth(client.gpt_token())
     }
 }
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct Response {
-    pub content: String,
+#[derive(Debug, Clone)]
+pub enum Response {
+    Search(super::Search),
+    Answers(super::Answers),
+    FineTuning(super::FineTuning),
+    Classifications(super::Classifications),
 }
-impl NormalRequest for Request {}

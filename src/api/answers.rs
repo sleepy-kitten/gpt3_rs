@@ -4,6 +4,7 @@
 use std::collections::HashMap;
 
 use crate::OPENAI_URL;
+use crate::client::NormalRequest;
 use crate::{into_vec::IntoVec, model::Model};
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
@@ -168,3 +169,5 @@ impl RequestInfo for Request {
         format!("{OPENAI_URL}/answers")
     }
 }
+
+impl NormalRequest for Request {}

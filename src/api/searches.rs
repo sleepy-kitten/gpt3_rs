@@ -5,7 +5,7 @@
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
-use crate::{model::Model, into_vec::IntoVec};
+use crate::{model::Model, into_vec::IntoVec, client::NormalRequest};
 
 use super::RequestInfo;
 /// Rank provided documents based off of a query
@@ -95,3 +95,4 @@ impl RequestInfo for Request {
         self.model.url("/search")
     }
 }
+impl NormalRequest for Request {}

@@ -1,9 +1,10 @@
 use serde::{Deserialize, Serialize};
 use crate::api::{Action, Auth};
 use crate::OPENAI_URL;
+use crate::client::NormalRequest;
 
 pub struct Request {
-    file_id: String,
+    pub file_id: String,
 }
 
 impl Action for Request {
@@ -26,3 +27,5 @@ pub struct Response {
     /// Whether the deletion was successful or not
     pub deleted: bool,
 }
+
+impl NormalRequest for Request {}

@@ -1,10 +1,11 @@
 use serde::{Deserialize, Serialize};
 use crate::api::{Action, Auth};
 use crate::OPENAI_URL;
+use crate::client::NormalRequest;
 use crate::prelude::Purpose;
 
 pub struct Request {
-    file_id: String,
+    pub file_id: String,
 }
 
 impl Action for Request {
@@ -32,3 +33,4 @@ pub struct Response {
     /// The purpose of the file
     pub purpose: Purpose,
 }
+impl NormalRequest for Request {}

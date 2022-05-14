@@ -1,4 +1,5 @@
 use crate::api::{Action, Auth};
+use crate::client::NormalRequest;
 use crate::prelude::Purpose;
 use crate::OPENAI_URL;
 use serde::{Deserialize, Serialize};
@@ -11,7 +12,7 @@ where
     T: FilePurpose + Serialize,
 {
     /// The file to upload
-    file: T,
+    pub file: T,
 }
 impl<T> Request<T>
 where
@@ -69,3 +70,4 @@ pub struct Response {
     /// The purpose of the file
     pub purpose: Purpose,
 }
+impl<'a, T> NormalRequest for RequestInternal<'a, T> where T: FilePurpose + Serialize {}

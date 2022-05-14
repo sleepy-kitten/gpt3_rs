@@ -6,7 +6,7 @@ use std::collections::HashMap;
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
-use crate::{model::Model, into_vec::IntoVec};
+use crate::{model::Model, into_vec::IntoVec, client::NormalRequest};
 
 use super::{RequestInfo, LogProbs};
 /// Create completions for a prompt
@@ -165,3 +165,5 @@ impl RequestInfo for Request {
         self.model.url("/completions")
     }
 }
+impl NormalRequest for Request {}
+

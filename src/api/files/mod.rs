@@ -3,6 +3,7 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use super::Purpose;
 
 pub mod content;
+pub mod content_checked;
 pub mod delete;
 pub mod list;
 pub mod metadata;
@@ -63,43 +64,5 @@ impl FilePurpose for FineTuning {
 impl FilePurpose for Raw {
     fn purpose(&self) -> Purpose {
         self.purpose
-    }
-}
-
-impl<T> TryFrom<content::Response> for Search<T>
-where
-    T: DeserializeOwned,
-{
-    type Error = serde_json::Error;
-
-    fn try_from(value: content::Response) -> Result<Self, Self::Error> {
-        serde_json::from_str(&value.content)
-    }
-}
-impl<T> TryFrom<content::Response> for Answers<T>
-where
-    T: DeserializeOwned,
-{
-    type Error = serde_json::Error;
-
-    fn try_from(value: content::Response) -> Result<Self, Self::Error> {
-        serde_json::from_str(&value.content)
-    }
-}
-impl<T> TryFrom<content::Response> for Classifications<T>
-where
-    T: DeserializeOwned,
-{
-    type Error = serde_json::Error;
-
-    fn try_from(value: content::Response) -> Result<Self, Self::Error> {
-        serde_json::from_str(&value.content)
-    }
-}
-impl TryFrom<content::Response> for FineTuning {
-    type Error = serde_json::Error;
-
-    fn try_from(value: content::Response) -> Result<Self, Self::Error> {
-        serde_json::from_str(&value.content)
     }
 }
