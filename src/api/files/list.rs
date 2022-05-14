@@ -1,9 +1,10 @@
 use crate::api::files;
 use crate::api::{Action, Auth};
-use crate::OPENAI_URL;
 use crate::client::NormalRequest;
+use crate::OPENAI_URL;
 use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Clone, PartialEq)]
 pub struct Request;
 
 impl Action for Request {

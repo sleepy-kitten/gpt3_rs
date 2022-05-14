@@ -4,6 +4,7 @@ use crate::OPENAI_URL;
 use crate::client::NormalRequest;
 use crate::prelude::Purpose;
 
+#[derive(Debug, Clone, PartialEq)]
 pub struct Request {
     pub file_id: String,
 }

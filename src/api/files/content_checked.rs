@@ -1,6 +1,7 @@
 use crate::api::{Action, Auth};
 use crate::OPENAI_URL;
 
+#[derive(Debug, Clone, PartialEq)]
 pub struct Request {
     pub file_id: String,
 }

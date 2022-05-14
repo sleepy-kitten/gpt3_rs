@@ -6,7 +6,8 @@ use serde::{Deserialize, Serialize};
 
 use super::FilePurpose;
 
-#[derive(Debug, Clone)]
+
+#[derive(Debug, Clone, PartialEq)]
 pub struct Request<T>
 where
     T: FilePurpose + Serialize,
