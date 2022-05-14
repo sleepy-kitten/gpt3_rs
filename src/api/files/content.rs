@@ -10,7 +10,11 @@ use crate::client::NormalRequest;
 pub struct Request {
     pub file_id: String,
 }
-
+impl Request {
+    pub fn new(file_id: String) -> Self {
+        Request { file_id }
+    }
+}
 impl Action for Request {
     type Response = Response;
 

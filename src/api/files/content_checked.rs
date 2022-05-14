@@ -14,7 +14,11 @@ use super::{Answers, Classifications, FineTuning, Search};
 pub struct Request {
     pub file_id: String,
 }
-
+impl Request {
+    pub fn new(file_id: String) -> Self {
+        Request { file_id }
+    }
+}
 impl Action for Request {
     type Response = Response;
 

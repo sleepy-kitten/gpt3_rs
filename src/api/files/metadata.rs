@@ -1,18 +1,21 @@
-use serde::{Deserialize, Serialize};
 use crate::api::{Action, Auth};
-use crate::OPENAI_URL;
 use crate::client::NormalRequest;
 use crate::prelude::Purpose;
-
+use crate::OPENAI_URL;
+use serde::{Deserialize, Serialize};
 
 /// # OpenAi documentation
-/// 
+///
 /// Returns information about a specific file.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Request {
     pub file_id: String,
 }
-
+impl Request {
+    pub fn new(file_id: String) -> Self {
+        Request { file_id }
+    }
+}
 impl Action for Request {
     type Response = Response;
 
