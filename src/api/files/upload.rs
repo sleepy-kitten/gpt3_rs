@@ -4,7 +4,7 @@ use crate::prelude::Purpose;
 use crate::OPENAI_URL;
 use serde::{Deserialize, Serialize};
 
-use super::{File, FilePurpose};
+use super::{File, FilePurpose, ValidFile};
 
 /// # OpenAi documentation
 ///
@@ -12,17 +12,17 @@ use super::{File, FilePurpose};
 /// Currently, the size of all the files uploaded by one organization can be up to 1 GB.
 /// Please contact us if you need to increase the storage limit.
 #[derive(Debug, Clone)]
-pub struct Request<T> {
+pub struct Request<T: ValidFile> {
     /// The file to upload
     pub file: File<T>,
 }
-impl<T> Request<T> {
+impl<T: ValidFile> Request<T> {
     pub fn new(file: File<T>) -> Self {
         Request { file }
     }
 }
 #[derive(Debug, Clone, Serialize)]
-struct RequestInternal<'a, T> {
+struct RequestInternal<'a, T: ValidFile> {
     file: &'a File<T>,
     purpose: Purpose,
 }
@@ -30,6 +30,7 @@ struct RequestInternal<'a, T> {
 impl<'a, T> From<&'a Request<T>> for RequestInternal<'a, T>
 where
     File<T>: FilePurpose,
+    T: ValidFile,
 {
     fn from(request: &'a Request<T>) -> Self {
         RequestInternal {
@@ -41,7 +42,7 @@ where
 impl<T> Action for Request<T>
 where
     File<T>: Serialize + FilePurpose,
-    T: Serialize,
+    T: Serialize + ValidFile,
 {
     type Response = Response;
 
@@ -68,4 +69,4 @@ pub struct Response {
     /// The purpose of the file
     pub purpose: Purpose,
 }
-impl<'a, T> NormalRequest for RequestInternal<'a, T> {}
+impl<T: ValidFile> NormalRequest for Request<T> {}

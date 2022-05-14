@@ -9,13 +9,13 @@ pub mod list;
 pub mod metadata;
 pub mod upload;
 
-/// A file with the purpose "search"
-///
-/// has a text field
 pub trait FilePurpose {
     fn purpose(&self) -> Purpose;
 }
-
+pub trait ValidFile {}
+/// A file with the purpose "search"
+///
+/// has a text field
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Search<T = ()> {
     pub text: String,
@@ -44,11 +44,11 @@ pub struct Raw {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct File<T> {
+pub struct File<T: ValidFile> {
     pub lines: Vec<T>,
 }
 
-impl<T> File<T> {
+impl<T: ValidFile> File<T> {
     pub fn new(lines: Vec<T>) -> Self {
         File { lines }
     }
@@ -81,3 +81,7 @@ impl FilePurpose for Raw {
         self.purpose
     }
 }
+impl<T> ValidFile for Search<T> {}
+impl<T> ValidFile for Answers<T> {}
+impl<T> ValidFile for Classifications<T> {}
+impl ValidFile for FineTuning {}
