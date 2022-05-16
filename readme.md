@@ -23,7 +23,7 @@ async fn main() {
         .prompt("what is 1 + 2?")
         .build()
         .unwrap();
-    let response = client.request(&request).await.unwrap();
+    let response = request.request(&client).await.unwrap();
     let answer = &response.choices[0].text;
 
     println!("{answer}");
@@ -51,7 +51,7 @@ async fn main() {
         .build()
         .unwrap();
 
-    let response = client.request(&request).await.unwrap();
+    let response = request.request(&client).await.unwrap();
     let answer = &response.choices[0].text;
 
     println!("{answer}");
