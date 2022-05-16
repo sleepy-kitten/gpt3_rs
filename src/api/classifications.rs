@@ -10,7 +10,7 @@ use crate::into_vec::IntoVec;
 use crate::model::Model;
 use crate::OPENAI_URL;
 
-use super::{completions, LogProbs, RequestInfo};
+use super::{LogProbs, RequestInfo};
 /// Classifies a query from provided context
 ///
 /// # OpenAi documentation
@@ -123,8 +123,8 @@ pub struct Request {
 /// A response corresponding to a [`Request`]
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Response {
-    /// metadata from the completion used to create the response text
-    pub completion: completions::Response,
+    /// completion id
+    pub completion: String,
     /// The chosen label for the query
     pub label: String,
     /// The model used for the completion of the request
