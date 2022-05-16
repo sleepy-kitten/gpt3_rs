@@ -1,5 +1,3 @@
-use std::io::Read;
-
 use crate::api::BuildRequest;
 use crate::prelude::Purpose;
 use crate::{Form, Part, OPENAI_URL};
