@@ -1,7 +1,7 @@
-use crate::api::{Action, Auth};
+use crate::api::Action;
 use crate::client::NormalRequest;
 use crate::prelude::Purpose;
-use crate::OPENAI_URL;
+use crate::{Form, Part, OPENAI_URL};
 use serde::{Deserialize, Serialize};
 
 use super::{File, FilePurpose, ValidFile};
@@ -21,37 +21,35 @@ impl<T: ValidFile> Request<T> {
         Request { file }
     }
 }
-#[derive(Debug, Clone, Serialize)]
-struct RequestInternal<'a, T: ValidFile> {
-    file: &'a File<T>,
-    purpose: Purpose,
-}
-
-impl<'a, T> From<&'a Request<T>> for RequestInternal<'a, T>
-where
-    File<T>: FilePurpose,
-    T: ValidFile,
-{
-    fn from(request: &'a Request<T>) -> Self {
-        RequestInternal {
-            file: &request.file,
-            purpose: request.file.purpose(),
-        }
-    }
-}
 impl<T> Action for Request<T>
 where
-    File<T>: Serialize + FilePurpose,
+    File<T>: FilePurpose,
     T: Serialize + ValidFile,
 {
     type Response = Response;
 
     fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {
+        let content = self
+            .file
+            .lines
+            .iter()
+            .map(serde_json::to_string)
+            .map(Result::unwrap)
+            .map(|string| string + "\n")
+            .collect::<String>();
+
+        let form = Form::new()
+            .part("purpose", Part::text(self.file.purpose().to_string()))
+            .part(
+                "file",
+                Part::text(content).file_name(self.file.name.clone()),
+            );
+
         client
             .reqwest_client()
             .post(format!("{OPENAI_URL}/files"))
-            .auth(client.gpt_token())
-            .json(&RequestInternal::from(self))
+            .bearer_auth(client.gpt_token())
+            .multipart(form)
     }
 }
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]

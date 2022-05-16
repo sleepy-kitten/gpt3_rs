@@ -101,34 +101,6 @@ where
     }
 }
 
-#[cfg(feature = "blocking")]
-impl Request for crate::api::files::content_checked::Request {
-    type Response = crate::api::files::content_checked::Response;
-
-    fn request(&self, client: &Client) -> reqwest::Result<Self::Response> {
-        let metadata = crate::api::files::metadata::Request {
-            file_id: self.file_id.clone(),
-        }
-        .request(client)?;
-        let response = self.build_request(client).send()?;
-        let file = match metadata.purpose {
-            crate::prelude::Purpose::Search => Self::Response::Search(response.json()?),
-
-            crate::prelude::Purpose::Answers => Self::Response::Answers(response.json()?),
-            crate::prelude::Purpose::Classifications => {
-                Self::Response::Classifications(response.json()?)
-            }
-            crate::prelude::Purpose::FineTuning => Self::Response::FineTuning(response.json()?),
-        };
-        Ok(file)
-    }
-    fn request_raw(&self, client: &Client) -> reqwest::Result<String> {
-        crate::api::files::content::Request {
-            file_id: self.file_id.clone(),
-        }
-        .request_raw(client)
-    }
-}
 #[cfg(not(feature = "blocking"))]
 #[async_trait]
 impl<T> Request for T
@@ -150,38 +122,3 @@ where
     }
 }
 
-#[cfg(not(feature = "blocking"))]
-#[async_trait]
-impl Request for crate::api::files::content_checked::Request {
-    type Response = crate::api::files::content_checked::Response;
-
-    async fn request(&self, client: &Client) -> reqwest::Result<Self::Response> {
-        let metadata = crate::api::files::metadata::Request {
-            file_id: self.file_id.clone(),
-        }
-        .request(client)
-        .await?;
-
-        let response = self.build_request(client).send().await?;
-
-        let file = match metadata.purpose {
-            crate::prelude::Purpose::Search => Self::Response::Search(response.json().await?),
-
-            crate::prelude::Purpose::Answers => Self::Response::Answers(response.json().await?),
-            crate::prelude::Purpose::Classifications => {
-                Self::Response::Classifications(response.json().await?)
-            }
-            crate::prelude::Purpose::FineTuning => {
-                Self::Response::FineTuning(response.json().await?)
-            }
-        };
-        Ok(file)
-    }
-    async fn request_raw(&self, client: &Client) -> reqwest::Result<String> {
-        crate::api::files::content::Request {
-            file_id: self.file_id.clone(),
-        }
-        .request_raw(client)
-        .await
-    }
-}

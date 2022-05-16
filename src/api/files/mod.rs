@@ -43,14 +43,16 @@ pub struct Raw {
     pub purpose: Purpose,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct File<T: ValidFile> {
+    #[serde(skip)]
+    pub name: String,
     pub lines: Vec<T>,
 }
 
 impl<T: ValidFile> File<T> {
-    pub fn new(lines: Vec<T>) -> Self {
-        File { lines }
+    pub fn new(name: String, lines: Vec<T>) -> Self {
+        File { name, lines }
     }
 }
 

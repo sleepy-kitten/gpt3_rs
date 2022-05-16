@@ -1,4 +1,4 @@
-use crate::api::{Action, Auth};
+use crate::api::{Action};
 use crate::client::NormalRequest;
 use crate::prelude::Purpose;
 use crate::OPENAI_URL;
@@ -23,7 +23,7 @@ impl Action for Request {
         client
             .reqwest_client()
             .get(format!("{OPENAI_URL}/files/{}", self.file_id))
-            .auth(client.gpt_token())
+            .bearer_auth(client.gpt_token())
     }
 }
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]

@@ -30,6 +30,16 @@ pub(crate) type RequestBuilder = reqwest::RequestBuilder;
 #[cfg(feature = "blocking")]
 pub(crate) type RequestBuilder = reqwest::blocking::RequestBuilder;
 
+#[cfg(feature = "blocking")]
+pub(crate) type Part = reqwest::blocking::multipart::Part;
+#[cfg(not(feature = "blocking"))]
+pub(crate) type Part = reqwest::multipart::Part;
+
+#[cfg(feature = "blocking")]
+pub(crate) type Form = reqwest::blocking::multipart::Form;
+#[cfg(not(feature = "blocking"))]
+pub(crate) type Form = reqwest::multipart::Form;
+
 pub mod api;
 mod client;
 mod into_vec;
@@ -42,10 +52,14 @@ pub mod prelude {
     pub use crate::client::Client;
     pub use crate::model::Model;
 }
+
 #[cfg(test)]
 #[cfg(feature = "blocking")]
 mod tests {
-    use crate::{client::Request, prelude::*};
+    use crate::{
+        client::Request,
+        prelude::{files::File, *},
+    };
     #[test]
     fn answers() {
         let token = std::env::var("GPT_API_TOKEN").unwrap();
@@ -145,20 +159,55 @@ mod tests {
         println!("{:#?}", response);
     }
     #[test]
-    fn trait_impl() {
+    fn file() {
         let token = std::env::var("GPT_API_TOKEN").unwrap();
 
         let client = Client::new(token);
 
-        let request = searches::Builder::default()
-            .model(Model::Ada)
-            .documents(&["White house", "hospital", "school"])
-            .query("the president")
-            .build()
+        let file_id_request = files::upload::Request::new(File::new(
+            "answers.jsonl".to_string(),
+            vec![
+                files::Answers {
+                    text: "say hi".to_string(),
+                    metadata: (),
+                },
+                files::Answers {
+                    text: "what's 1 + 2".to_string(),
+                    metadata: (),
+                },
+                files::Answers {
+                    text: "how are you".to_string(),
+                    metadata: (),
+                },
+            ],
+        ));
+
+        let file_id_raw = file_id_request.request_raw(&client).unwrap();
+
+        println!("{:#?}", file_id_raw);
+
+        let file_id = file_id_request.request(&client).unwrap();
+
+        println!("{:#?}", file_id);
+
+        let content =
+            files::content_checked::Request::new("file-oC0DckgCWpjmOoJlYBzAl5VA".to_string())
+                .request(&client)
+                .unwrap();
+
+        println!("{:#?}", content);
+
+        let deleted = files::delete::Request::new("file-oC0DckgCWpjmOoJlYBzAl5VA".to_string())
+            .request_raw(&client)
             .unwrap();
 
-        let response = request.request(&client).unwrap();
-        println!("{:#?}", response);
+        println!("{:#?}", deleted);
+
+        let deleted = files::delete::Request::new("file-oC0DckgCWpjmOoJlYBzAl5VA".to_string())
+            .request(&client)
+            .unwrap();
+
+        println!("{:#?}", deleted);
     }
 }
 const OPENAI_URL: &str = "https://api.openai.com/v1";

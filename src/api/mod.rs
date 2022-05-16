@@ -33,6 +33,17 @@ pub enum Purpose {
     #[serde(rename = "fine-tune")]
     FineTuning,
 }
+impl ToString for Purpose {
+    fn to_string(&self) -> String {
+        match self {
+            Purpose::Search => "search",
+            Purpose::Answers => "answers",
+            Purpose::Classifications => "classifications",
+            Purpose::FineTuning => "fine-tune",
+        }
+        .to_string()
+    }
+}
 
 #[doc(hidden)]
 pub trait Action {
@@ -44,29 +55,6 @@ pub trait RequestInfo {
     type Response;
     fn url(&self) -> String;
 }
-trait Auth {
-    fn auth_header<T>(self, token: T) -> Self
-    where
-        T: std::fmt::Display;
-    fn auth<T>(self, token: T) -> Self
-    where
-        T: std::fmt::Display;
-}
-impl Auth for crate::RequestBuilder {
-    fn auth_header<T>(self, token: T) -> Self
-    where
-        T: std::fmt::Display,
-    {
-        self.header("Content-Type", "application/json")
-            .bearer_auth(token)
-    }
-    fn auth<T>(self, token: T) -> Self
-    where
-        T: std::fmt::Display,
-    {
-        self.bearer_auth(token)
-    }
-}
 
 impl<T> Action for T
 where
@@ -77,7 +65,7 @@ where
         client
             .reqwest_client()
             .post(&self.url())
-            .auth_header(client.gpt_token())
+            .bearer_auth(client.gpt_token())
             .json(self)
     }
 }

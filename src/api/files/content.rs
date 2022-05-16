@@ -1,10 +1,10 @@
-use serde::{Deserialize, Serialize};
-use crate::api::{Action, Auth};
-use crate::OPENAI_URL;
+use crate::api::Action;
 use crate::client::NormalRequest;
+use crate::OPENAI_URL;
+use serde::{Deserialize, Serialize};
 
 /// # OpenAi documentation
-/// 
+///
 /// Returns the contents of the specified file
 #[derive(Debug, Clone, PartialEq)]
 pub struct Request {
@@ -22,7 +22,7 @@ impl Action for Request {
         client
             .reqwest_client()
             .get(format!("{OPENAI_URL}/files/{}/content", self.file_id))
-            .auth(client.gpt_token())
+            .bearer_auth(client.gpt_token())
     }
 }
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
