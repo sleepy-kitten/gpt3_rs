@@ -1,3 +1,9 @@
+//! This module other modules that are used to interact with the file api
+//!
+//! Files are represented as a [`File<T>`] where `T` represents the file type
+//! valid types are [`Search`], [`Answers`], [`Classifications`] and [`FineTuning`]
+//!  
+
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 use super::Purpose;
@@ -48,6 +54,7 @@ pub struct FineTuning {
 }
 #[derive(Debug, Clone)]
 pub struct Raw {
+    pub name: String,
     pub data: String,
     pub purpose: Purpose,
 }

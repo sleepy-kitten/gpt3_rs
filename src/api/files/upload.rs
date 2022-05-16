@@ -1,9 +1,11 @@
+use std::io::Read;
+
 use crate::api::BuildRequest;
 use crate::prelude::Purpose;
 use crate::{Form, Part, OPENAI_URL};
 use serde::{Deserialize, Serialize};
 
-use super::{File, FilePurpose, ValidFile};
+use super::{File, FilePurpose, Raw, ValidFile};
 
 /// # OpenAi documentation
 ///
@@ -11,11 +13,11 @@ use super::{File, FilePurpose, ValidFile};
 /// Currently, the size of all the files uploaded by one organization can be up to 1 GB.
 /// Please contact us if you need to increase the storage limit.
 #[derive(Debug, Clone)]
-pub struct Request<T: ValidFile> {
+pub struct Request<T> {
     /// The file to upload
     pub file: T,
 }
-impl<T: ValidFile> Request<T> {
+impl<T> Request<T> {
     pub fn new(file: T) -> Self {
         Request { file }
     }
@@ -34,6 +36,24 @@ where
             .map(Result::unwrap)
             .map(|string| string + "\n")
             .collect::<String>();
+
+        let form = Form::new()
+            .part("purpose", Part::text(self.file.purpose().to_string()))
+            .part(
+                "file",
+                Part::text(content).file_name(self.file.name.clone()),
+            );
+
+        client
+            .reqwest_client()
+            .post(format!("{OPENAI_URL}/files"))
+            .bearer_auth(client.gpt_token())
+            .multipart(form)
+    }
+}
+impl BuildRequest for Request<Raw> {
+    fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {
+        let content = self.file.data.clone();
 
         let form = Form::new()
             .part("purpose", Part::text(self.file.purpose().to_string()))
