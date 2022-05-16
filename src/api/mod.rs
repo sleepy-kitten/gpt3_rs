@@ -47,12 +47,10 @@ impl ToString for Purpose {
 
 #[doc(hidden)]
 pub trait BuildRequest {
-    type Response;
     fn build_request(&self, client: &Client) -> crate::RequestBuilder;
 }
 #[doc(hidden)]
 pub trait RequestInfo {
-    type Response;
     fn url(&self) -> String;
 }
 
@@ -60,7 +58,6 @@ impl<T> BuildRequest for T
 where
     T: RequestInfo + Serialize,
 {
-    type Response = T::Response;
     fn build_request(&self, client: &Client) -> crate::RequestBuilder {
         client
             .reqwest_client()

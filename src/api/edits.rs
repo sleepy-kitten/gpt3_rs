@@ -4,11 +4,11 @@
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
-use crate::{model::Model, client::NormalRequest};
+use crate::model::Model;
 
 use super::RequestInfo;
 /// Edit text based off of an instruction
-/// 
+///
 /// # OpenAi documentation
 /// Given a prompt and an instruction, the model will return an edited version of the prompt.
 /// # Example
@@ -71,10 +71,11 @@ pub struct Choice {
     pub index: usize,
 }
 impl RequestInfo for Request {
-    type Response = Response;
     fn url(&self) -> String {
         self.model.edit_url("/edits")
     }
 }
-impl NormalRequest for Request {}
-
+#[cfg_attr(not(feature = "blocking"), async_trait::async_trait)]
+impl crate::client::Request for Request {
+    type Response = Response;
+}

@@ -1,5 +1,4 @@
 use crate::api::BuildRequest;
-use crate::client::NormalRequest;
 use crate::prelude::Purpose;
 use crate::{Form, Part, OPENAI_URL};
 use serde::{Deserialize, Serialize};
@@ -26,8 +25,6 @@ where
     File<T>: FilePurpose,
     T: Serialize + ValidFile,
 {
-    type Response = Response;
-
     fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {
         let content = self
             .file
@@ -67,4 +64,11 @@ pub struct Response {
     /// The purpose of the file
     pub purpose: Purpose,
 }
-impl<T: ValidFile> NormalRequest for Request<T> {}
+#[cfg_attr(not(feature = "blocking"), async_trait::async_trait)]
+impl<T> crate::client::Request for Request<T>
+where
+    T: ValidFile,
+    Request<T>: BuildRequest
+{
+    type Response = Response;
+}

@@ -4,12 +4,11 @@
 use std::collections::HashMap;
 
 use crate::OPENAI_URL;
-use crate::client::NormalRequest;
 use crate::{into_vec::IntoVec, model::Model};
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
-use super::{RequestInfo, completions};
+use super::{completions, RequestInfo};
 /// Answers questions from provided context
 ///
 /// # OpenAi documentation
@@ -164,10 +163,12 @@ pub struct SelectedDocument {
 }
 
 impl RequestInfo for Request {
-    type Response = Response;
     fn url(&self) -> String {
         format!("{OPENAI_URL}/answers")
     }
 }
 
-impl NormalRequest for Request {}
+#[cfg_attr(not(feature = "blocking"), async_trait::async_trait)]
+impl crate::client::Request for Request {
+    type Response = Response;
+}

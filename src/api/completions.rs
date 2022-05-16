@@ -6,11 +6,11 @@ use std::collections::HashMap;
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
-use crate::{model::Model, into_vec::IntoVec, client::NormalRequest};
+use crate::{into_vec::IntoVec, model::Model};
 
-use super::{RequestInfo, LogProbs};
+use super::{LogProbs, RequestInfo};
 /// Create completions for a prompt
-/// 
+///
 /// # OpenAi documentation
 /// Given a prompt, the model will return one or more predicted completions, and can also return the probabilities of alternative tokens at each position.
 /// # Example
@@ -160,10 +160,11 @@ pub struct Choice {
 }
 
 impl RequestInfo for Request {
-    type Response = Response;
     fn url(&self) -> String {
         self.model.url("/completions")
     }
 }
-impl NormalRequest for Request {}
-
+#[cfg_attr(not(feature = "blocking"), async_trait::async_trait)]
+impl crate::client::Request for Request {
+    type Response = Response;
+}

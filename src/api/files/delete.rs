@@ -1,5 +1,4 @@
 use crate::api::BuildRequest;
-use crate::client::NormalRequest;
 use crate::OPENAI_URL;
 use serde::{Deserialize, Serialize};
 
@@ -16,7 +15,6 @@ impl Request {
     }
 }
 impl BuildRequest for Request {
-    type Response = Response;
 
     fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {
         client
@@ -36,4 +34,7 @@ pub struct Response {
     pub deleted: bool,
 }
 
-impl NormalRequest for Request {}
+#[cfg_attr(not(feature = "blocking"), async_trait::async_trait)]
+impl crate::client::Request for Request {
+    type Response = Response;
+}

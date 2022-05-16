@@ -1,4 +1,4 @@
-use async_trait::async_trait;
+use serde::Deserialize;
 
 use crate::OPENAI_URL;
 use crate::{api::BuildRequest, Client};
@@ -22,8 +22,6 @@ impl Request {
     }
 }
 impl BuildRequest for Request {
-    type Response = Response;
-
     fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {
         client
             .reqwest_client()
@@ -31,7 +29,7 @@ impl BuildRequest for Request {
             .bearer_auth(client.gpt_token())
     }
 }
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize)]
 pub enum Response {
     Search(super::File<Search>),
     Answers(super::File<Answers>),
@@ -40,7 +38,7 @@ pub enum Response {
 }
 
 #[cfg(not(feature = "blocking"))]
-#[async_trait]
+#[async_trait::async_trait]
 impl crate::client::Request for crate::api::files::content_checked::Request {
     type Response = crate::api::files::content_checked::Response;
 

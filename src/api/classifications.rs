@@ -6,7 +6,7 @@ use std::collections::HashMap;
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
-use crate::{into_vec::IntoVec, client::NormalRequest};
+use crate::into_vec::IntoVec;
 use crate::model::Model;
 use crate::OPENAI_URL;
 
@@ -150,10 +150,11 @@ pub struct SelectedExample {
 }
 
 impl RequestInfo for Request {
-    type Response = Response;
     fn url(&self) -> String {
         format!("{OPENAI_URL}/classifications")
     }
 }
-impl NormalRequest for Request {}
-
+#[cfg_attr(not(feature = "blocking"), async_trait::async_trait)]
+impl crate::client::Request for Request {
+    type Response = Response;
+}

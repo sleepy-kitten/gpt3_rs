@@ -5,7 +5,7 @@
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
-use crate::{model::Model, into_vec::IntoVec, client::NormalRequest};
+use crate::{into_vec::IntoVec, model::Model};
 
 use super::RequestInfo;
 /// Rank provided documents based off of a query
@@ -90,9 +90,11 @@ pub struct Data {
 }
 
 impl RequestInfo for Request {
-    type Response = Response;
     fn url(&self) -> String {
         self.model.url("/search")
     }
 }
-impl NormalRequest for Request {}
+#[cfg_attr(not(feature = "blocking"), async_trait::async_trait)]
+impl crate::client::Request for Request {
+    type Response = Response;
+}

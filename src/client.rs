@@ -48,7 +48,6 @@ impl Client {
         &self.reqwest_client
     }
 }
-pub trait NormalRequest {}
 
 /// Sends the request to the OpenAi api
 ///
@@ -67,58 +66,41 @@ pub trait NormalRequest {}
 /// let response = request.request(&client).await.unwrap();
 /// ```
 #[cfg_attr(not(feature = "blocking"), async_trait)]
-pub trait Request {
+pub trait Request
+where
+    Self: BuildRequest,
+    Self::Response: DeserializeOwned,
+{
     type Response;
     #[cfg(feature = "blocking")]
-    fn request(&self, client: &Client) -> reqwest::Result<Self::Response>;
-    #[cfg(feature = "blocking")]
-    fn request_raw(&self, client: &Client) -> reqwest::Result<String>;
-
-    #[cfg(not(feature = "blocking"))]
-    async fn request(&self, client: &Client) -> reqwest::Result<Self::Response>;
-    #[cfg(not(feature = "blocking"))]
-    async fn request_raw(&self, client: &Client) -> reqwest::Result<String>;
-}
-
-#[cfg(feature = "blocking")]
-impl<T> Request for T
-where
-    T: BuildRequest + NormalRequest,
-    T::Response: DeserializeOwned,
-{
-    type Response = T::Response;
-
-    fn request(&self, client: &Client) -> reqwest::Result<Self::Response> {
+    fn request(
+        &self,
+        client: &Client,
+    ) -> reqwest::Result<<Self as crate::client::Request>::Response> {
         let response = self.build_request(client).send()?;
         let json = response.json()?;
         Ok(json)
     }
-
+    #[cfg(feature = "blocking")]
     fn request_raw(&self, client: &Client) -> reqwest::Result<String> {
         let response = self.build_request(client).send()?;
-        let json = response.text()?;
-        Ok(json)
+        let text = response.text()?;
+        Ok(text)
     }
-}
 
-#[cfg(not(feature = "blocking"))]
-#[async_trait]
-impl<T> Request for T
-where
-    T: BuildRequest + NormalRequest + Sync,
-    T::Response: DeserializeOwned,
-{
-    type Response = T::Response;
-
-    async fn request(&self, client: &Client) -> reqwest::Result<Self::Response> {
+    #[cfg(not(feature = "blocking"))]
+    async fn request(
+        &self,
+        client: &Client,
+    ) -> reqwest::Result<<Self as crate::client::Request>::Response> {
         let response = self.build_request(client).send().await?;
         let json = response.json().await?;
         Ok(json)
     }
+    #[cfg(not(feature = "blocking"))]
     async fn request_raw(&self, client: &Client) -> reqwest::Result<String> {
         let response = self.build_request(client).send().await?;
-        let json = response.text().await?;
-        Ok(json)
+        let text = response.text().await?;
+        Ok(text)
     }
 }
-
