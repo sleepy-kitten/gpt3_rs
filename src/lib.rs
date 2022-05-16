@@ -182,28 +182,19 @@ mod tests {
             ],
         ));
 
-        let file_id_raw = file_id_request.request_raw(&client).unwrap();
-
-        println!("{:#?}", file_id_raw);
-
         let file_id = file_id_request.request(&client).unwrap();
 
         println!("{:#?}", file_id);
 
-        let content =
-            files::content_checked::Request::new("file-oC0DckgCWpjmOoJlYBzAl5VA".to_string())
-                .request(&client)
-                .unwrap();
+        std::thread::sleep(std::time::Duration::from_secs(10));
 
-        println!("{:#?}", content);
-
-        let deleted = files::delete::Request::new("file-oC0DckgCWpjmOoJlYBzAl5VA".to_string())
+        let content = files::content::Request::new(file_id.id.clone())
             .request_raw(&client)
             .unwrap();
 
-        println!("{:#?}", deleted);
+        println!("{:#?}", content);
 
-        let deleted = files::delete::Request::new("file-oC0DckgCWpjmOoJlYBzAl5VA".to_string())
+        let deleted = files::delete::Request::new(file_id.id)
             .request(&client)
             .unwrap();
 
