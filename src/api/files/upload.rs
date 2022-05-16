@@ -13,17 +13,17 @@ use super::{File, FilePurpose, ValidFile};
 #[derive(Debug, Clone)]
 pub struct Request<T: ValidFile> {
     /// The file to upload
-    pub file: File<T>,
+    pub file: T,
 }
 impl<T: ValidFile> Request<T> {
-    pub fn new(file: File<T>) -> Self {
+    pub fn new(file: T) -> Self {
         Request { file }
     }
 }
-impl<T> BuildRequest for Request<T>
+impl<T> BuildRequest for Request<File<T>>
 where
-    File<T>: FilePurpose,
-    T: Serialize + ValidFile,
+    File<T>: FilePurpose + ValidFile,
+    T: Serialize,
 {
     fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {
         let content = self
@@ -68,7 +68,7 @@ pub struct Response {
 impl<T> crate::client::Request for Request<T>
 where
     T: ValidFile,
-    Request<T>: BuildRequest
+    Request<T>: BuildRequest,
 {
     type Response = Response;
 }
