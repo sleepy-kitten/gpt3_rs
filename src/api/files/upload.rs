@@ -1,4 +1,4 @@
-use crate::api::Action;
+use crate::api::BuildRequest;
 use crate::client::NormalRequest;
 use crate::prelude::Purpose;
 use crate::{Form, Part, OPENAI_URL};
@@ -21,7 +21,7 @@ impl<T: ValidFile> Request<T> {
         Request { file }
     }
 }
-impl<T> Action for Request<T>
+impl<T> BuildRequest for Request<T>
 where
     File<T>: FilePurpose,
     T: Serialize + ValidFile,

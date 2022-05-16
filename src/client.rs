@@ -1,4 +1,4 @@
-use crate::api::Action;
+use crate::api::BuildRequest;
 #[cfg(not(feature = "blocking"))]
 use async_trait::async_trait;
 use serde::de::DeserializeOwned;
@@ -83,7 +83,7 @@ pub trait Request {
 #[cfg(feature = "blocking")]
 impl<T> Request for T
 where
-    T: Action + NormalRequest,
+    T: BuildRequest + NormalRequest,
     T::Response: DeserializeOwned,
 {
     type Response = T::Response;
@@ -105,7 +105,7 @@ where
 #[async_trait]
 impl<T> Request for T
 where
-    T: Action + NormalRequest + Sync,
+    T: BuildRequest + NormalRequest + Sync,
     T::Response: DeserializeOwned,
 {
     type Response = T::Response;

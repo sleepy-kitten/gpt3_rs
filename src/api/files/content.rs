@@ -1,4 +1,4 @@
-use crate::api::Action;
+use crate::api::BuildRequest;
 use crate::client::NormalRequest;
 use crate::OPENAI_URL;
 use serde::{Deserialize, Serialize};
@@ -15,7 +15,7 @@ impl Request {
         Request { file_id }
     }
 }
-impl Action for Request {
+impl BuildRequest for Request {
     type Response = Response;
 
     fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {

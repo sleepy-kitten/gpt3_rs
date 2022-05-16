@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 
 use crate::OPENAI_URL;
-use crate::{api::Action, Client};
+use crate::{api::BuildRequest, Client};
 
 use super::{Answers, Classifications, File, FineTuning, Search};
 
@@ -21,7 +21,7 @@ impl Request {
         Request { file_id }
     }
 }
-impl Action for Request {
+impl BuildRequest for Request {
     type Response = Response;
 
     fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {

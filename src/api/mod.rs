@@ -46,7 +46,7 @@ impl ToString for Purpose {
 }
 
 #[doc(hidden)]
-pub trait Action {
+pub trait BuildRequest {
     type Response;
     fn build_request(&self, client: &Client) -> crate::RequestBuilder;
 }
@@ -56,7 +56,7 @@ pub trait RequestInfo {
     fn url(&self) -> String;
 }
 
-impl<T> Action for T
+impl<T> BuildRequest for T
 where
     T: RequestInfo + Serialize,
 {

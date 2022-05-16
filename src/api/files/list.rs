@@ -1,5 +1,5 @@
 use crate::api::files;
-use crate::api::Action;
+use crate::api::BuildRequest;
 use crate::client::NormalRequest;
 use crate::OPENAI_URL;
 use serde::{Deserialize, Serialize};
@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, PartialEq)]
 pub struct Request;
 
-impl Action for Request {
+impl BuildRequest for Request {
     type Response = Response;
 
     fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {
