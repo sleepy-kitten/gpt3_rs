@@ -1,4 +1,4 @@
-//! This module other modules that are used to interact with the api
+//! This module contains other modules that are used to interact with the api
 //!
 //! Each of the modules contains a `module::Request` struct, usually crated with the `module::Builder`
 //! and a `module::Response` struct.
