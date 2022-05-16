@@ -19,7 +19,7 @@
 //!         .build()
 //!         .unwrap();
 //!
-//!     let response = client.request(&request).await.unwrap();
+//!     let response = request.request(&client).await.unwrap();
 //!     let answer = &response.choices[0].text;
 //!
 //!     println!("{answer}");
