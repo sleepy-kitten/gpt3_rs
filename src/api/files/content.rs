@@ -15,7 +15,6 @@ impl Request {
     }
 }
 impl BuildRequest for Request {
-
     fn build_request(&self, client: &crate::Client) -> crate::RequestBuilder {
         client
             .reqwest_client()
@@ -24,10 +23,30 @@ impl BuildRequest for Request {
     }
 }
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(transparent)]
 pub struct Response {
     pub content: String,
 }
 #[cfg_attr(not(feature = "blocking"), async_trait::async_trait)]
 impl crate::client::Request for Request {
     type Response = Response;
+
+    #[cfg(not(feature = "blocking"))]
+    async fn request(
+        &self,
+        client: &crate::Client,
+    ) -> reqwest::Result<<Self as crate::client::Request>::Response> {
+        Ok(Response {
+            content: self.request_raw(client).await?,
+        })
+    }
+    #[cfg(feature = "blocking")]
+    fn request(
+        &self,
+        client: &crate::Client,
+    ) -> reqwest::Result<<Self as crate::client::Request>::Response> {
+        Ok(Response {
+            content: self.request_raw(client)?,
+        })
+    }
 }
