@@ -18,7 +18,7 @@ type RequestClient = reqwest::blocking::Client;
 ///     .build()
 ///     .unwrap();
 ///
-/// let response = client.request(request).await.unwrap();
+/// let response = request.request(&client).await.unwrap();
 /// ```
 pub struct Client {
     reqwest_client: RequestClient,
