@@ -46,11 +46,13 @@ mod into_vec;
 mod model;
 pub use client::Client;
 pub use model::Model;
+pub use client::Request;
 
 pub mod prelude {
     pub use crate::api::*;
     pub use crate::client::Client;
     pub use crate::model::Model;
+    pub use crate::client::Request;
 }
 
 #[cfg(test)]
