@@ -73,10 +73,11 @@ pub struct Request {
 /// A response corresponding to a [`Request`]
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Response {
-    /// The ansers returned by this request
-    pub data: Vec<Data>,
     /// The requested action
     pub object: String,
+    /// The ansers returned by this request
+    pub data: Vec<Data>,
+    pub model: String,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
