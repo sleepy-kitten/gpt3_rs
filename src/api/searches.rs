@@ -74,7 +74,7 @@ pub struct Request {
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Response {
     /// The requested action
-    pub object: String,
+    pub object: Option<String>,
     /// The ansers returned by this request
     pub data: Vec<Data>,
     pub model: Option<String>,
