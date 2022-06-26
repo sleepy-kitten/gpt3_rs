@@ -15,6 +15,16 @@ use serde::{Deserialize, Serialize};
 /// ```
 pub struct IntoVec<T>(Vec<T>);
 
+impl From<Vec<String>> for IntoVec<String> {
+    fn from(from: Vec<String>) -> Self {
+        IntoVec(from)
+    }
+}
+impl From<&[String]> for IntoVec<String> {
+    fn from(from: &[String]) -> Self {
+        IntoVec(from.to_vec())
+    }
+}
 impl From<&[&str]> for IntoVec<String> {
     fn from(from: &[&str]) -> Self {
         IntoVec(from.iter().cloned().map(ToOwned::to_owned).collect())
